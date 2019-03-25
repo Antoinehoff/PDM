@@ -1,0 +1,206 @@
+% PRÄAMBEL
+% ***************************************************************************************************
+
+\documentclass[smallheadings,headsepline,11pt,oneside,a4paper]{scrbook}
+%\documentclass{article}
+
+% Hier gibt man an, welche Art von Dokument man schreiben möchte.
+% Möglichkeiten in {}: scrartcl, scrreprt, scrbook, aber auch: article, report, book
+
+\usepackage[american]{babel} 		% ermöglicht deutsche Silbentrennung und direkte Eingabe von Umlauten, ...
+\usepackage[utf8]{inputenc} 	% teilt LaTeX die Texcodierung mit. Bei Windowssystemen: ansinew
+\usepackage[T1]{fontenc} 		% ermöglicht die Silbentrennung von Wörtern mit Umlauten
+
+\usepackage[usenames,dvipsnames]{color}
+
+% PDF wird mit Lesezeichen (verlinktes Inhaltsverzeichnis) versehen (bei Betrachtung mit Acrobat Reader sichtbar)
+\definecolor{farbelink}{rgb}{0,0,0}		%Definition der Linkfarbe für das PDF-File
+\usepackage[pdftex,colorlinks=true,urlcolor=farbelink,linkcolor=farbelink,citecolor=farbelink]{hyperref}
+
+\usepackage{lscape}
+
+\usepackage{amssymb,amsmath}
+
+\usepackage{geometry} 
+\geometry{a4paper} 
+\usepackage[parfill]{parskip}    								% Activate to begin paragraphs with an empty line
+\usepackage[pdftex]{graphicx}
+\usepackage{epstopdf}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+\usepackage[margin=10pt,font=small,labelfont=bf]{caption}		%Package für kleinere Schrift unter den Bildern
+
+\usepackage[usenames]{color}
+
+\usepackage{listings} 									%Einfügen von Programmcode
+\lstset{numbers=left, numberstyle=\tiny, numbersep=5pt} 			%mit Zeilennummerierung links
+\lstset{language=[77]Fortran}								%Programmiersprache: Fortran77
+
+
+%text with 2.5cm on both sides (A4=210mm)
+\setlength{\textwidth}{160mm}
+\setlength{\evensidemargin}{0in}
+\setlength{\oddsidemargin}{0in}
+\setlength{\columnsep}{0.25in}
+%
+%text with 2.5cm on top and 2.5cm on bottom (A4=297mm)
+\setlength{\textheight}{247mm}
+\setlength{\topmargin}{0pt}
+\setlength{\headsep}{25pt}
+\setlength{\headheight}{0pt}
+
+
+%\typearea{12} % Breite des bedruckten Bereiches vergrössern (funktioniert nur in \documentclass mit: scrreprt, scrartcl, scrbook)
+
+\clubpenalty = 10000 		% schliesst Schusterjungen aus
+\widowpenalty = 10000 		% schliesst Hurenkinder aus
+
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}			%Selbst gestaltete Kopf-/Fusszeilen
+
+%%% Fancy Header %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Fancy Header Style Options
+\fancyhf{}
+\fancyfoot{} 
+
+\renewcommand{\chaptermark}[1]{         		% Lower Case Chapter marker style
+\markboth{\chaptername\ \thechapter.\ #1}{}} 	%
+\renewcommand{\sectionmark}[1]{         		% Lower case Section marker style
+\markright{\thesection.\ #1}}         			%
+\fancyfoot[R]{\thepage}    					% Page number in the right on every page
+\fancyhead[L]{\leftmark}       				% Chapter in the right on even pages
+\fancyhead[L]{\rightmark}     				% Section in the left on odd pages
+\renewcommand{\headrulewidth}{0.3pt}   		% Width of head rule
+
+\fancypagestyle{plain}{%
+\fancyhf{} 								% clear all header and footer fields
+\fancyfoot[R]{\thepage}    					% Page number in the right on every page
+\fancyhead[L]{\leftmark}       				% Chapter in the right on even pages
+\renewcommand{\headrulewidth}{0.3pt}}   	% Width of head rule
+
+
+\setlength{\textheight}{21cm}				%Vergrössert die Höhe des bedruckbaren Bereichs
+
+%%%%%%%%% PERSONAL PACKAGES %%%%%%%%%%%%%%%%%%
+\usepackage{natbib}
+%\usepackage{cite}
+\usepackage{physics}
+\newcommand{\equref}[1]{(\ref{#1})}
+%\usepackage[ruled, vlined ]{algorithm2e}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+%%%%%%%%% PERSONAL PACKAGES %%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\frontmatter							%römische Seitenzahlen
+
+% TITELSEITE
+% ***************************************************************************************************
+% use FS or HS to identify the semester, FS (Fruehling) for spring semester, HS (Herbst) for fall semester
+
+\begin{titlepage}
+\begin{center}
+    \vspace*{1cm}
+    {\huge \bfseries  Impact of Molecular Diffusion on Transport in Natural Porous Media\\ }
+    \vspace{2cm}
+    {\large 
+	Antoine Hoffmann\\
+	~\\
+	Master in Computational Science and Engineering\\
+	\vspace{3.5cm}
+	Semester FS 2019\\
+	~\\
+	Institute of Fluid Dynamics\\
+	ETH Zürich\\
+    }
+
+\vspace{\stretch{1}}
+
+
+
+{\large
+	Supervisor: Daniel Meyer-Massetti\\[\baselineskip]
+	Professor: Patrick Jenny
+}
+\end{center}
+
+\vspace*{2cm} % a bit of space at the bottom of the page
+
+\end{titlepage}
+
+%\clearpage\null
+
+
+% Einfügen einer leeren Seite nach dem Titelblatt
+\begin{titlepage}
+\thispagestyle{empty}
+\newpage
+\mbox{}
+\end{titlepage}
+
+
+% ABSTRACT
+% ***************************************************************************************************
+\include{Abstract}
+
+
+% INHALTSVERZEICHNIS
+% ***************************************************************************************************
+
+\tableofcontents
+% Dieser Befehl erstellt das Inhaltsverzeichnis. Damit die Seitenzahlen korrekt sind, muss das Dokument zweimal gesetzt werden!
+
+
+
+% HAUPTTEIL
+% ***************************************************************************************************
+% Folgende Befehle stehen für die Gliederung zur Verfügung: \chapter \section \subsection \subsubsection \paragraph
+% Für Anführungszeichen: "` (CH-Tastatur: ZUERST: Shift-Tast und Taste 2, DANN: Shift-Taste und Taste ^)
+% Für Schlusszeichen: "' (CH- Tastatur: ZUERST: Shift-Tast und Taste 2, DANN:  '-Taste, rechts neben der Null)
+% Für Neuen Abschnitt: Eine Zeile leer lassen.
+
+
+\mainmatter	%arabische Seitenzahlen
+
+
+%1. Einführung
+%------------------------------------------------------------------------------------------------------------------------------
+\include{Introduction}
+
+%Weitere Kapitel
+
+%2. Vorgehen
+%------------------------------------------------------------------------------------------------------------------------------
+\include{Algorithm}
+
+%Literaturverzeichnis
+%------------------------------------------------------------------------------------------------------------------------------
+%\include{Bibliography}
+\bibliography{C:/Users/Antoine/Documents/Bibtex/MT_bib}
+\bibliographystyle{unsrtnat}
+%Anhang
+%------------------------------------------------------------------------------------------------------------------------------
+\appendix
+\renewcommand{\chaptermark}[1]{         		% Benutze "Anhang" statt "Kapitel" in den Kopfzeilen
+\markboth{Anhang\ \thechapter.\ #1}{}} 
+
+\include{Appendix}
+
+
+
+%ABBILDUNGSVERZEICHNIS
+% ***************************************************************************************************
+%\clearpage
+%\phantomsection
+%\addcontentsline{toc}{chapter}{Abbildungsverzeichnis}
+%\listoffigures
+
+%TABELLENVERZEICHNIS
+% ***************************************************************************************************
+%\clearpage
+%\phantomsection
+%\addcontentsline{toc}{chapter}{Tabellenverzeichnis}
+%\listoftables
+
+
+\end{document}

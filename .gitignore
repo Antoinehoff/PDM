@@ -1,0 +1,14 @@
+*.ipynb_checkpoints
+*.vscode
+
+*.pdf
+*.gz
+*~
+template_BA_MA
+templates
+Sources
+data/*
+
+Report/*
+!Report/*.tex
+
