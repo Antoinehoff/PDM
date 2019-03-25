@@ -1,13 +1,14 @@
 *.ipynb_checkpoints
 *.vscode
-
 *.pdf
 *.gz
 *.xlsx
+
 template_BA_MA
 templates
+
 Sources/*
-!Sources/MT_bib
+!Sources/MT_bib.bib
 
 data/*
 
