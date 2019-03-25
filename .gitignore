@@ -7,7 +7,7 @@
 template_BA_MA
 templates
 Sources/*
-!Sources/MT_bib.tex
+!Sources/MT_bib
 
 data/*
 
