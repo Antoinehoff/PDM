@@ -6,7 +6,9 @@
 *.xlsx
 template_BA_MA
 templates
-Sources
+Sources/*
+!Sources/MT_bib.tex
+
 data/*
 
 Report/*
