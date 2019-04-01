@@ -3,6 +3,7 @@
 *.pdf
 *.gz
 *.xlsx
+*.dat
 
 template_BA_MA
 templates
