@@ -1,6 +1,5 @@
 \chapter{Introduction}
 %%Contextual introduction
-\textit{\textbf{Context and problematic}}\footnote{These titles are here to help the review of the text. I will cancel them at the end of my work.}\\
 Diffusion in porous media is a common but complex natural phenomenon occurring in a wide domain of application, from carbon storage to advanced oil extraction and medicine metabolization\footnote{shall I cite here ?}.
 Despite of widely used macroscopic description of transport such as the Fick's law of diffusion (\citet{Fick1855}) and Darcy law (\citet{Darcy1856}), complex porous media can present behaviors that seems to require a microscopic approach in order to predict correctly the transport.
 These so called non-Fickian dispersion phenomena are driven by pore-scale characteristics of the flow inside the porous media and their generalization to macroscopic laws constitute an active research topic nowadays. \\
@@ -12,7 +11,7 @@ As an illustration, \citet{Dentz2017} demonstrated how the macroscopic advection
 failed to describe the diffusion of the macroscale concentration $\bar{c}(x,t)$ for a mean flow $U$ and a macroscopic diffusion coefficient $\mathcal{D}$ by comparison to direct numerical simulation (DNS) data (\citet[Fig. 3]{Dentz2017}).\\
 
 
-\textbf{\textit{General numerical approach of the problem}}\\
+\section{General numerical approach of the problem}
 In this article as in many other recent works, numerical approaches have been adopted in order to bridge the gap between microscopic behavior of the flow and macroscopic diffusion as \citet{Meyer2016}, \citet{Dentz2017} and \citet{Puyguiraud2019}. In their works, they all used roughly the following methodology.\\
 \textit{Sample scanning}\\
 First of all, a digital porous domain is obtained either synthetically (\cite{Dentz2017}) or by high resolution tomography of physical sandstone samples (\cite{Meyer2016} and \cite{Puyguiraud2019}).
@@ -72,8 +71,9 @@ Unfortunately, solving equation (\ref{eq:stokes}) and simulating a large number 
 \textit{Introduction to probabilistic approach}\\
 This issue motivated a probabilistic approach of the microscopic particles dynamic with the help of stochastic processes like the historical success of the Brownian motion modeling by \citet{Einstein1906}. 
 In his work, Einstein predicted accurately the displacement probability of a pollen grain over time without considering a complex deterministic model that would have included an exhaustive description of particle to particle interactions.\\
+
 %Mathematical tools for stochastic processes
-\textbf{\textit{Mathematical tools for stochastic modeling}}\\
+\section{Mathematical tools for stochastic modeling}
 In a general way, a stochastic process can be seen as the existence of a certain time dependent random variable $\textbf{X}(t)$ in a system (c.f. \citet[Sec. 3.1]{Gardiner1996}). The probability of $\textbf{X}(t)$ visiting successively $N_x$ states $\{\textbf{x}_i,t_i\}_{i=1}^{N_x}$ knowing the $N_y$ previously visited states $\{\textbf{y}_j,\tau_j\}_{j=1}^{N_y}$  can be expressed as
 \begin{equation}\label{eq:cond_prob}
 p(\{\textbf{x}_i,t_i\}_{i=1}^{N_x}|\{\textbf{y}_j,\tau_j\}_{j=1}^{N_y})\quad\textrm{where}\quad \tau_1<\tau_2<...<\tau_{N_y}<t_1<t_2<...<t_{N_x}.
@@ -87,7 +87,7 @@ p(\{\textbf{x}_i,t_i\}_{i=1}^{N_x}|\{\textbf{y}_j,\tau_j\}_{j=1}^{N_y})=p(\{\tex
 \]
 where $(\textbf{y}_{N_y},\tau_{N_y})=(\textbf{x},t)$ is the current state.
 This property can be seen as if the modeled system does not keep the previous events that occurred in memory which is a reasonable statement for numerous physical systems like flowing particles.\\
-\textit{SDE, examples and PDE for PDF}\\
+\subsubsection{Stochastic differential equations and probability distribution functions}
 The evolution of a time dependent, one dimensional, random variable $X(t)$ that follows a Markov process can be expressed as a general stochastic differential equation (SDE) of the form
 \begin{equation}
 	dx = a(x,t)dt + b(x,t)\xi(t)dt
@@ -136,7 +136,7 @@ where $t$ and $t'$ denote two different times, $\textbf{y}$ and $\textbf{z}$ two
 We can see now that drift and diffusion are expressed in a general manner by the vector $\textbf{A}(\textbf{z},t)$ and the matrix $\underline{\textbf{B}}(\textbf{z},t)$, respectively.\\
 Thus, one of the major goals of actual research in porous media is to set the functions $\textbf{A}(\textbf{z},t)$ and $\underline{\textbf{B}}(\textbf{z},t)$ using geometry based arguments (e.g. pore length $L$ and porosity $\phi$) and macroscopic features of the flow (e.g mean velocity $U$ and pressure gap $\Delta\textrm{P}$) in order to build a stochastic model that could reproduce non Fickian diffusion dynamic and transition to Fickian regime.\\
 
-\textbf{\textit{Estimation of PDF by sampling in particle flow}}\\
+\section{Estimation of PDF by sampling in particle flow}
 In the case of flowing particles, modeling the velocity of a particle $i$ as a Markovian variable $\textbf{U}_i$ and knowing a state $(\textbf{x}_0,\textbf{u}_0,t_0)$ would entirely define its position time serie 
 \[\textbf{X}_i(t)=\int_{t_0}^{t}\textbf{U}_i(t')dt'\]
 which is an equivalent expression of (\ref{eq:traject}).
@@ -146,7 +146,7 @@ Hence, one needs to estimate Lagrangian velocity PDF $p(\textbf{u},t)$ from empi
 p(Q(t)=q)\equiv p(q,t)=\lim\limits_{N_p\rightarrow\infty}p_{N_p}(q,t) \quad\textrm{where}\quad p_{N_p}(q,t)=\frac{1}{N_p}\sum_{i=1}^{N_p}\delta(q-q_i(t))
 \]
 It is worth noting that the approximated PDF $p_{N_p}(q,t)$ can be obtained easily thanks to DNS data $\{q(\textbf{a}_i,t)\}_{i=1}^{N_p}$ for $N_p$ particles, differentiated here by their respective initial position $\{\textbf{a}_i\}_{i=1}^{N_p}$.\\
-\textit{Ergodicity}\\
+
 However, in order to provide an accurate estimation of $p(q,t)$ with a finite number of particles, the DNS data 
 must be sampled during a sufficiently long simulation time $T_{sim}$ and a for a sufficient number of particle. 
 Mathematically, these sufficiency conditions should be understood as ergodicity on the particle data series, i.e.
@@ -166,8 +166,8 @@ More practically, ergodicity condition with a finite number of particle can stil
 Thus, ergodicity is the most important condition to respect in order to estimate accurate PDF with DNS data. The Markov model parameters can then be set to fit the DNS data PDF with random variables PDF under ergodic condition.\\
 The whole procedure, described above, forms the basis of the studied papers in the following literature review.\\
 
-\textit{\textbf{Literature review and recent results}}\\
-\textit{Puyguiraud et al. 2019}\\
+\section{Literature review and recent results}
+\subsection{Puyguiraud et al. 2019}
 In their latest work, \citet{Puyguiraud2019} presented an analysis of Lagrangian pore-scale velocity series in a three-dimensional sample of a Berea sandstone, well known for retaining oil and natural gas.
 Their numerical porous domain was a cube of $0.95$mm$^3$, pore length $L_0=0.15$mm and tortuosity $\kappa=1.75$, obtained with a scanning resolution of $300^3$ voxels. 
 With the help of the SIMPLE algorithm of OpenFoam and a mesh of $900^3$ cubes that fitted perfectly the scan voxels, the single-phase pore-scale flow has been obtained by solving (\ref{eq:stokes}) with additional non slip boundary conditions on the lateral sides of the domain and at solid interface, i.e.
@@ -234,7 +234,7 @@ To conclude their work, they affirmed that this latter model has been parameteri
 However, it would interesting to know more about the sensitiveness of the OU process with respect to the cutting length since a geometric argumentation of $l_c=2.5L_0$ has not been provided.
 The versatility of their best stochastic model could have been tested for other porous media as well.
 
-\textit{Dentz et al. 2017}\\
+\subsection{Dentz et al. 2017}
 On their side, \citet{Dentz2017} studied a synthetic porous media built by simulating sedimentation of irregularly shaped grains generated with an empirically fitted Weibull distribution
 \begin{equation}\label{eq:weibull}
 	p_W(x)=bkx^{k-1}\exp(bx^k)
@@ -293,7 +293,7 @@ One can see the breakthrough curve of \citeauthor{Dentz2017} as a more complex f
 It would be interesting to measure the breakthrough curve resulting from the OU process of \citet{Puyguiraud2019}.
 It can be expected that the TDRW would show better performances than the OU process since the former required to set five parameters and the latter only one.
 
-\textit{Meyer et al. 2016}\\
+\subsection{Meyer et al. 2016}
 It is interesting to relate both previously cited papers to the work of \citet{Meyer2016} who focused on isochronous time Lagrangian velocity PDF obtained from six different physical samples. \\
 Their main goal was to test the ability of a previously developed Markov process to universally describe transport in porous domain.
 To do so, they studied different physical porous samples with various geometric features, from simple bead pack structure with $\kappa_{\rm{BP}} = 1.26$, $L_{\rm{BP}}=0.6$mm and $\phi_{\rm{BP}}=35.9\%$, to complex Estaillades structure characterized by $\kappa_{\rm{Est}} = 2.26$, $L_{\rm{Est}}=3.31$mm and $\phi_{\rm{Est}}=10.9\%$.
@@ -328,5 +328,8 @@ The Lagrangian velocity PDF rules the displacement of the particles, hence it se
 The question of equidistant and isochronous sampling stays open but isochronous series displayed a more complex behavior in both \citet{Meyer2016} and \citet{Puyguiraud2019} works which may indicate that it contains, generally, more information about the structure of the flow.\\
 The comparison between particle breakthrough curve done by \citet{Dentz2017} over time is a very good way to obtain condensed results without losing much information. However, it becomes useless as soon as the considered plane is saturated.\\
 The comparison criteria chosen by \citet{Meyer2016} are more exhaustive as it shows time evolution of particle position PDF but may be harder to read.\\
-+++++++++\\
-\textit{...Description of the plan of thesis and the chosen perspectives...}
+
+\section{Report plan and attack angle}
+In this work, the transition between advective and diffusive regimes is investigated by analyzing data from simulations in porous media with a various range of diffusion coefficient. The critical diffusion coefficient as well as the size of the transient area are evaluated for \textbf{two different sample :} Bentheimer stone and \textbf{????}.
+The results are then explained with a physical reasoning on the macroscopic structure of the different sandstone which leads to some conclusion about the importance of molecular diffusion for transport in porous media.
+
