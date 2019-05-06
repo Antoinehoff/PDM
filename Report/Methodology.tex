@@ -1,0 +1,98 @@
+\chapter{Direct numerical simulation and methodology}
+The direct numerical simulation program \texttt{streamlinesnt3D}, written in \textsc{FORTRAN} by D. Massetti, is the angular stone of this work's methodology. 
+To represent the porous domain, the code must be fed with a voxel mesh representing the solid regions as well as an Eulerian velocity field corresponding to a numerical solution of the Stokes equation \eqref{eq:stokes} computed beforehand.
+The voxel meshes have been obtained from \citet{digitalrocksportal} and the Eulerian flow were computed for a unitary pressure gradient as boundary condition.\\
+\texttt{streamlinesnt3D} can be run in two different modes.
+The former will simulate the evolution of a single particle during a provided time $T_{max}$ or until the trajectory reached a given number sections where one section corresponds to one complete passage in the medium. 
+The particle position and velocity can be sampled with a given cell storage frequency (CSF), i.e. setting $\mathrm{CSF}=N$ will sample the particle state every $N$ time steps. 
+
+The latter mode tracks simultaneously $N_p$ particles forming a plume. The output data are snapshots taken from a user provided timetable. In opposite to the single particle tracker, this mode does not allow to display trajectories but is more efficient to evaluate macroscopic mass transport since it can run in parallel with OpenMP.
+
+
+\section{Particle tracking algorithm}
+The particle tracking method used in \texttt{streamlinesnt3D} interpolates the displacement of a particle from a face to another taking advection and diffusion into account.
+ 
+On one hand, advection is simulated by determining, with a linear approximation of the velocity gradient, which next cell face a particle will reach and how long it will take (c.f. \cite{Pollock1988}).
+On the other hand, diffusive behavior has been modeled by D. Massetti as a probability for the particle to deviate from the velocity field in a random direction with a velocity magnitude related to the molecular diffusion $D_m$.\\
+The key of combining advection and diffusion in this algorithm resides in setting the computation time step as the minimum between the advection only time step $dt_A$ from Pollock and a diffusive time step $dt_\zeta:=2\times\frac{L_c^2}{D_m}$ with $L_c$ the cell length.
+Thus, a large diffusion coefficient will lead to a small diffusive time step 
+\begin{equation}
+\begin{array}{ccccc}
+	T_\zeta & = & \min[T_A, T_D] & \approx & \min[\frac{\Delta x}{U_A}, 2\frac{\Delta x^2}{D_m}] \\
+	\frac{\Delta x}{U_A} = 2\frac{\Delta x^2}{D_m}  & \Leftrightarrow & D_m & = & 2*\Delta x * U_A \\	 
+	& \Leftrightarrow & D_m & = & 2*10^{-3}U_{ref} T_{ref} * U_{ref} \\
+	& \Leftrightarrow & D_m & \approx & 2\times(10^{-3}*4.6\times 10^{-6} * 2.8\times 10^{2}) * (4.6\times 10^{-6}) \\
+	& \Leftrightarrow & D_m & \approx & 10^{-12}
+\end{array}
+\end{equation}
+
+\begin{algorithm}[H]
+	\caption{Particle tracking algorithm}
+	\label{alg:part_track}
+	\begin{algorithmic}[1]
+		\Procedure {Pollock}{$d$, $n$, $L_c$, $v$, $g$, $bnd$, $\textbf{i}_s$, $\textbf{x}_s$, $D_m$, $c_{max}$, $t_{max}$, $m$, $dt$, $dx$, $u$, $a$, $n_s$, trace, $x_c$, seed}
+		\State $dt_z\leftarrow0$ \Comment Init. diffusion step time
+		\State $dt_{ze}\leftarrow0$ \Comment	Init. diffusion elapsed time
+		\State $\textbf{i}\leftarrow \textbf{i}_s$ \Comment Init. current cell index as starting cell
+		\State $\textbf{x}_i\leftarrow \textbf{x}_s$ \Comment Init. current position as starting position
+		\State $e_i\leftarrow0$ \Comment Init. exit interface ($e_i=\pm j$ means exit direction $\pm\hat{\textbf{x}}_j$)
+		\State $m\leftarrow0$ \Comment Init. number of streamline cells
+		\State $t\leftarrow0$ \Comment Init. current streamline travel time
+		\Repeat
+		\If {$D_m > 0$ and $dt_{ze} \geq dt_z$} \Comment Diffusion step
+		\State $\textbf{Z}\leftarrow $ normal gaussian deviates s.t. $Z_k\neq0\,\forall k=1,d$
+		\State $\textbf{v}_l,\textbf{v}_r$$\leftarrow$ Interface velocities from cell $\textbf{i}$
+		\State $dt_z\leftarrow\textsc{Diffusiontime}(d,\textbf{v}_t,\textbf{v}_r,L_c,D_m)$
+		\If {$e_i\neq 0$} \Comment To avoid stream line starting point
+		\State $i_{|e_i|}\leftarrow i_{|e_i|} + \frac{1}{2}(\frac{e_i}{|e_i|}+\frac{Z_{|e_i|}}{|Z_{|e_i|}|}) $
+		\State $e_i \leftarrow -|e_i|\frac{Z_{|e_i|}}{|Z_{|e_i|}|}$ 
+		\EndIf
+		\Else \Comment Pure advective step
+		\If {$e_i\neq 0$} \Comment To avoid stream line starting point
+		\State $i_{|e_i|}\leftarrow i_{|e_i|} + \frac{e_i}{|e_i|} $ 
+		\State $e_i \leftarrow -e_i$ 
+		\EndIf
+		\EndIf
+		\State \textsc{Checkboundaries}
+		\State \textsc{Checkgeometry}
+		\State $(\textbf{v}_l,\textbf{v}_r)$$\leftarrow$ Interface velocities from cell $\textbf{i}$
+		\State $(\textbf{x}_i,\textbf{x}_e,e_i)\leftarrow\textsc{Travelcell}(d, \textbf{v}_l, \textbf{v}_r, D_m, \textbf{Z}, dt_z, dt_e,L_c, u, a, dt, k)$ 
+		\Until{$m\geq c_{max}$ or $t \geq t_{max}$}\Comment Move particle
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[H]
+	\caption{Diffusion step time}
+	\label{alg:part_track}
+	\begin{algorithmic}[1]
+		\Procedure {Diffusiontime}{$d, v_l, v_r, D_m, \textbf{Z}, dt_z, dt_e,L_c, u, a, dt, k$}
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[H]
+	\caption{Dimensional advective/diffusive particle motion in a cell}
+	\label{alg:travelcell}
+	\begin{algorithmic}[1]
+		\Procedure {Travelcell}{$d, \textbf{v}_l, \textbf{v}_r, D_{mi}, Z_i, dt_z, dt_{ze}, \textbf{dx}, \textbf{x}_i, \textbf{x}_e, \textbf{v}_e, \textbf{a}_e, dt, e_i, n_s$}
+		\State $\textbf{A} \leftarrow \left(\frac{v_{r1}-v_{r1}}{dx_1},...,\frac{v_{rd}-v_{rd}}{dx_d}\right)^T$ 
+		\State $\textbf{v}_1 \leftarrow \textbf{v}_l + \textbf{A}*\textbf{x}_i$ \Comment Current particle speed
+		\For{$k=1,d$}
+		\State $x_1\leftarrow (\textbf{x}_i)_k/dx_k,\quad v_1\leftarrow dx_k(\textbf{v}_1)_k/D_m$ \Comment Non dimensional
+		\State $t_e \leftarrow \textsc{Traveltime}(x_1, v_1, Pe, t_e, x_e, n_s)$
+		\EndFor
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[H]
+	\caption{Advective/diffusive time for traversing a cell}
+	\label{alg:part_track}
+	\begin{algorithmic}[1]
+		\Procedure {Traveltime}{$x_1, v_1, Pe, Z, t_e, x_e$}
+		\State $n_s\leftarrow 0$ \Comment Init. step counter
+		\State $x_s=x_1 - v_1/\textrm{Pe}$ \Comment Stationary point with $u=0$
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
