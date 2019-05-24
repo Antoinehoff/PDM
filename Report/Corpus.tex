@@ -1,3 +1,104 @@
-\chapter{Numerical experiments and results}
+\chapter{Methodology and validation}
+\section{Simulation tool and data processing}
+Taken as a tool, the direct numerical simulation program \texttt{streamlinesnt3D}, written in \textsc{FORTRAN} by \citet{Meyer2017}, is the angular stone of this work's methodology. 
+Briefly, the program must be fed with a voxel mesh representing the solid regions as well as an Eulerian velocity field corresponding to a numerical solution of the Stokes equation \eqref{eq:stokes} computed beforehand.
+The studied voxel meshes have been obtained from the Digital Rocks Portal website (\citet{digitalrocksportal}) and the Eulerian flow were computed for a unitary pressure gradient as boundary condition.\\
+\texttt{streamlinesnt3D} can run in two different modes.
+The first mode simulates the evolution of a single particle during a user provided time $T_{max}$ or until the particle completed a certain number of passage through the sample denoted by SLSM (stream line section max). 
+The particle position and velocity are sampled given a user provided cell storage frequency (CSF) where $\mathrm{CSF}=N$ will sample the particle state every $N$ time steps.\\
+The second mode is meant to track simultaneously $N_p$ particles forming a plume. The output data are snapshots regarding a user provided timetable. 
+In opposite to the single particle tracker, this mode does not allow to display trajectories but is more efficient to evaluate macroscopic mass transport since it can run in parallel with OpenMP.
 
-blabla
+Finally, both program modes use the same tracking method that interpolates the displacement of a particle from a face to another taking advection and diffusion into account.
+On one hand, advection is simulated by determining, with a linear approximation of the velocity gradient, which next cell face a particle will reach and how long it will take (c.f. \cite{Pollock1988}).
+On the other hand, diffusive behavior has been modeled as a probability for the particle to deviate from the velocity field in a random direction with a velocity magnitude related to the molecular diffusion $D_m$ (c.f. \citet{Meyer2017}).\\
+The key of combining advection and diffusion in this algorithm resides in setting the computation time step as the minimum between the advection only time step $dt_A$ from \citet{Pollock1988} and a diffusive time step $dt_\zeta:=2\times\frac{L_c^2}{D_m}$ with $L_c$ the cell length.
+Thus, a large diffusion coefficient will lead to a small diffusive time step 
+
+As well as every classical Eulerian CFD numerical scheme, the program must fulfill the Courant–Friedrichs–Lewy (CFL) condition \eqref{eq:CFL} in order to be stable. 
+\begin{equation}
+	\Delta t < C\frac{\textbf{u}_i\cdot \hat{\textbf{x}}_d}{\Delta x} \quad \forall i\in\{1,2,...,N_p\},\,\forall \quad \hat{\textbf{x}}_1\in\{\hat{\textbf{x}}_2,\hat{\textbf{x}}_3,\hat{\textbf{x}}_d\}.
+	\label{eq:CFL}
+\end{equation}
+In order to minimize the computation time, the program set the time step to the maximal value that fulfills the CFL condition for the current particle state. 
+The sampled data form thus an heterogeneous time series that should be post processed in order to obtain results that can be compared to \citet{Meyer2016}.
+
+\begin{algorithm}
+	\caption{Isochronous transform post processing pseudo-code }
+	\label{alg:isochronous}
+	\begin{algorithmic}
+		\State \textbf{Input :} $\{(t_i,v_i)\}_{i=1}^N$
+		\Comment{Heterogeneous time series}
+		\State \textbf{Output :} $\{(\hat{t}_j,\hat{v}_j)\}_{j=1}^{\hat{N}}$
+		\Comment{Isochronous time series}
+		\State $\hat{\Delta t} \gets \frac{1}{N}\sum_{n=0}^{N-1}(t_{n+1}-t_{n})$
+		\Comment{Mean DNS time step}
+		\State $n \gets 1$, $j \gets 1$, $\hat{t} \gets t_1$
+		\Comment{Temporal loop initialization}
+		\While {$n \leq N$}
+		\While {$t_n <= \hat{t} <= t_{n+1}$}
+		\State $\hat{v}_j \gets v_n + \frac{\hat{t}-t_n}{t_{n+1}-t_n} v_{n+1}$
+		\State $\hat{t}\gets \hat{t} + \hat{\Delta t}$
+		\State $j \gets j + 1$
+		\EndWhile
+		\State $n\gets n+1$
+		\EndWhile
+	\end{algorithmic}
+\end{algorithm}
+
+Hence, a post processing script has been implemented in \textsc{Python} using \textsc{Scipy} packages (\cite{scipy}) to transform the rough output of the program, denoted DNS, into the isochronous time series needed for the statistical analysis.
+Algorithm \ref{alg:isochronous} shows the method used to perform the isochronous transformation of the DNS data which consists in using equidistantly linear interpolation.
+It is worth noting that the average DNS time step has been chosen as the equidistant time interval since it enables to keep the length of the resulting isochronous series comparable to the original one.\\
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.8]{D:/pdm_data/Figures/check_iso_transf.pdf}
+	\caption{Example of isochronous transform for $100$ DNS points in the Bentheimer 1000 sample. As a reminder, the log velocity magnitude is denoted $v=\ln{(u/U)}$ where $u:=||\textbf{u}||_2$ is the Lagrangian velocity magnitude}
+	\label{fig:checkisotransf}
+\end{figure}
+Figure \ref{fig:checkisotransf} displays the results of Algorithm \ref{alg:isochronous} for three independent simulations.
+It can be observed that oscillations with period smaller than one half of the average time step cannot be sampled by the isochronous series (see Nyquist–Shannon sampling theorem) which makes this process similar to a low pass filter in signal processing.
+Fortunately, the statistics presented previously should not be affected by such loss of information.\\
+
+\section{Validation of \cite{Meyer2016} results for $\mathrm{Pe}=\infty$}
+By running \texttt{streamlinesnt3D} on the Euler high performance clusters, the results of \citet{Meyer2016} at Pe$=\infty$ have been reproduced successfully as shown on Figure \ref{fig:lvm_pdf_peinf} for the log velocity magnitude of single particle tracking. 
+The Markov model has been implemented as well for additional validation.
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.8]{D:/pdm_data/Figures/LVM_pdf_DM=0.pdf}
+	\caption{Log velocity magnitude PDF for DNS and Isochronous data. The solid red line displays the skew normal probability distribution parametrized in \citet{Meyer2016} for Bentheimer 1000 sandstone. The dashed gray line represents the distribution of the velocity distrbution of the field among the sample. The particle has been tracked for $2\times 10^4$ passages and its statistics were measured at each time step.}
+	\label{fig:lvm_pdf_peinf}
+\end{figure}
+
+In the case of plume tracking, the transport results for early time have also been retrieved as shown on Figure blabla. The snapshots at later time have been left aside due to a lack of computational resources.
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.8]{D:/pdm_data/Figures/Plume_vs_markov_PeInf.pdf}
+	\caption{Plume transport for three snapshots without molecular diffusion.}
+	\label{fig:lvm_pdf_peinf}
+\end{figure}
+
+$$
+\hat R(k) = \frac{1}{n-k} \sum_{t=1}^{n-k} \left(\frac{X_t-\mu_Y}{\sigma_X}\right)\left(\frac{Y_t-\mu_Y}{\sigma_Y}\right) \quad\textrm{where}\quad \{Y_1,Y_2,...,Y_{n-k}\} := \{X_{k+1},X_{k+2},...,X_{n}\} 
+$$
+
+\chapter{Experiments with finite Péclet values}
+
+\section{Plume tracking}
+
+\section{Particle tracking}
+
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.8]{D:/pdm_data/Figures/LVM_pdf_comparison.pdf}
+	\caption{Log velocity magnitude PDF for DNS and Isochronous data for different Péclet values.}
+	\label{fig:lvm_pdf_peinf}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.8]{D:/pdm_data/Figures/model_test.pdf}
+	\caption{Log velocity magnitude PDF for DNS and Isochronous data for different Péclet values.}
+	\label{fig:lvm_pdf_peinf}
+\end{figure}
