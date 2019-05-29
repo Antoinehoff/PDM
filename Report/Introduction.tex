@@ -1,8 +1,16 @@
 \chapter{Introduction}
 %%Contextual introduction
-Diffusion in porous media is a common but complex natural phenomenon occurring in a wide domain of application, from carbon storage to advanced oil extraction and medicine metabolization\footnote{shall I cite here ?}.
-Despite of widely used macroscopic description of transport such as the Fick's law of diffusion (\citet{Fick1855}) and Darcy law (\citet{Darcy1856}), complex porous media can present behaviors that seems to require a microscopic approach in order to predict correctly the transport.
-These so called non-Fickian dispersion phenomena are driven by pore-scale characteristics of the flow inside the porous media and their generalization to macroscopic laws constitute an active research topic nowadays. \\
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.6]{Figures/bentheimer300_cuts.png}
+	\caption{(left) Side cut of x-ray scanned sample of Bentheimer sandstone with $300^3$ resolution and $L\approx0.3$mm. (right) z-averaged porosity for the same sample. Black regions show entirely solid column along z-axis.}
+	\label{fig:bentheimer300cuts}
+\end{figure}
+Diffusion in porous media is a common but complex natural phenomenon occurring in a wide domain of application, from carbon storage to advanced oil extraction and medicine metabolization.
+Despite of widely used macroscopic description of transport such as the Fick's law of diffusion (\citet{Fick1855}) and Darcy law (\citet{Darcy1856}), complex porous media can present behaviors that requires a microscopic approach in order to predict correctly the transport dynamic.
+For example, the Bentheimer sandstone presents, at microscopic scale, very tortuous cuts with a small porosity (c.f. Figure \ref{fig:bentheimer300cuts} left).
+The complexity of this sample is also put in evidence on Figure \ref{fig:bentheimer300cuts} (right) by plotting the percentage of void voxel along z-axis which demonstrates the existence of completely blocked area in the sample.
+Flows among such media are driven by the pore-scale geometry and their description using simple macroscopic laws constitute an active research topic nowadays.\\
 As an illustration, \citet{Dentz2017} demonstrated how the macroscopic advection-diffusion transport law
 \begin{equation}
 	\pdv{\bar{c}(x,t)}{t}+U\pdv{\bar{c}(x,t)}{x}-\mathcal{D}\pdv[2]{\bar{c}(x,t)}{x}=0
@@ -276,7 +284,7 @@ After this analytical modeling, \citeauthor{Dentz2017} continued their investiga
 Their first model considered purely advective processes, $\mathrm{Pe}=\infty$, with equidistant space transitions by defining transition time as $\Delta t_n=l/v(t_n)$ with a transition length  $l\sim L_0$. 
 They estimated analytically the asymptotic behavior of the breakthrough curve $f(x,t\gg T)\propto t^{-2}$ for the purely advective case by approximating the transition times PDF as a flux weighted Eulerian velocity PDF \eqref{eq:dentz_pev}.\\
 %\[\psi_a(t)=\frac{l}{t^3U}p_e(l/t)\]
-The predicted $t^{-2}$ dependence of the breakthrough curve for purely advective transport has been confirmed by the particle simulation for any Péclet value $Pe\in\{30, 3\cdot10^2, 5\cdot10^2, 10^3\}$. However this TDRW model did not capture the breakthrough curve tailing at either intermediate nor long time.\\
+The predicted $t^{-2}$ dependence of the breakthrough curve for purely advective transport has been confirmed by the particle simulation for any Péclet value Pe$\in\{30, 3\cdot10^2, 5\cdot10^2, 10^3\}$. However this TDRW model did not capture the breakthrough curve tailing at either intermediate nor long time.\\
 In the second model, diffusion has been added by considering the Lagrangian velocity PDF as a flux weighted pore mean velocity PDF \eqref{eq:dentz_pmv}. This hypothesis has been motivated by the fact that particles should experience a pore-scale Poiseuille flow \eqref{eq:dentz_poiseuille} that is smoothed by diffusion.
 The direction of spatial transition has also been randomized to allow upstream transitions with probability 
 \[w_u(v)=\frac{D\tau_v}{l^2}.\]

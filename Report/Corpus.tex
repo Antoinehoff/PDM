@@ -51,7 +51,7 @@ Algorithm \ref{alg:isochronous} shows the method used to perform the isochronous
 It is worth noting that the average DNS time step has been chosen as the equidistant time interval since it enables to keep the length of the resulting isochronous series comparable to the original one.\\
 \begin{figure}
 	\centering
-	\includegraphics[scale=0.8]{D:/pdm_data/Figures/check_iso_transf.pdf}
+	\includegraphics[scale=0.8]{Figures/check_iso_transf.pdf}
 	\caption{Example of isochronous transform for $100$ DNS points in the Bentheimer 1000 sample. As a reminder, the log velocity magnitude is denoted $v=\ln{(u/U)}$ where $u:=||\textbf{u}||_2$ is the Lagrangian velocity magnitude}
 	\label{fig:checkisotransf}
 \end{figure}
@@ -59,12 +59,27 @@ Figure \ref{fig:checkisotransf} displays the results of Algorithm \ref{alg:isoch
 It can be observed that oscillations with period smaller than one half of the average time step cannot be sampled by the isochronous series (see Nyquist–Shannon sampling theorem) which makes this process similar to a low pass filter in signal processing.
 Fortunately, the statistics presented previously should not be affected by such loss of information.\\
 
-\section{Validation of \cite{Meyer2016} results for $\mathrm{Pe}=\infty$}
-By running \texttt{streamlinesnt3D} on the Euler high performance clusters, the results of \citet{Meyer2016} at Pe$=\infty$ have been reproduced successfully as shown on Figure \ref{fig:lvm_pdf_peinf} for the log velocity magnitude of single particle tracking. 
-The Markov model has been implemented as well for additional validation.
+This method has been used in a similar way to compute equidistant time series as for the directional angle, $\theta (t)\in[-\pi,\pi]$, which indicates the orientation of the particle velocity vector, $\textbf{u}_n :=\textbf{u}(t_n)$, with respect to the mean flow direction $\textbf{U}$.
+More precisely, the angle $\theta$, defined as
+\begin{equation}
+\cos \theta_n = S_{n} \frac{\textbf{u}_n}{||\textbf{u}_n||_2 }\cdot \frac{\textbf{U}}{||\textbf{U}||_2},
+\end{equation}
+where $S_{n,n-1}\in\{-1,1\}$ is a factor that changes its sign only if the velocity direction went across the plane spanned by $\textbf{U}$ and $\textbf{U}\cross\textbf{u}_{n-1}$ on the previous step, i.e.
+\begin{equation}
+S_{n} = \mathrm{sign}_+(\textbf{u}_n\cdot [(\textbf{U}\cross\textbf{u}_{n-1})\cross \textbf{U}])\cdot S_{n-1} 
+\end{equation}
+whith sign$_+(x\geq 0)=1$ and sign$_+(x< 0)=-1$.
+
+\section{Validation of \cite{Meyer2016} results for advection dominated regime $(\mathrm{Pe}=\infty)$}
+In order to validate the post processing algorithms, the main results of \cite{Meyer2016} have been reproduced by running \texttt{streamlinesnt3D} in particle tracking mode on the ETH Euler cluster (scicomp.ethz.ch/wiki/Euler) with zero diffusion ($D_m=0$), sampling at each step ($\mathrm{CSF}=1$) and for $2\times 10^4$ sample crossings.\\ 
+Figure \ref{fig:lvm_pdf_peinf} displays the resulting log velocity magnitude PDF. 
+It is worth noting that the PDF obtained from isochronous series differs drastically from the rough DNS data by its wider distribution and its slower mean velocity.
+Thus, this illustrates efficiently how DNS data can lead to an underestimation on the small velocities due to the variable time step meant to accelerate the computation.\\
+The Markov model designed by \cite{Meyer2016} has been implemented as well and fits perfectly the PDF.
+It is interesting to compare those PDF with the distribution of the Eulerian flow of the sample (dashed line in Figure \ref{fig:lvm_pdf_peinf}).
 \begin{figure}
 	\centering
-	\includegraphics[scale=0.8]{D:/pdm_data/Figures/LVM_pdf_DM=0.pdf}
+	\includegraphics[scale=0.8]{Figures/LVM_pdf_DM=0.pdf}
 	\caption{Log velocity magnitude PDF for DNS and Isochronous data. The solid red line displays the skew normal probability distribution parametrized in \citet{Meyer2016} for Bentheimer 1000 sandstone. The dashed gray line represents the distribution of the velocity distrbution of the field among the sample. The particle has been tracked for $2\times 10^4$ passages and its statistics were measured at each time step.}
 	\label{fig:lvm_pdf_peinf}
 \end{figure}
@@ -73,7 +88,7 @@ In the case of plume tracking, the transport results for early time have also be
 
 \begin{figure}
 	\centering
-	\includegraphics[scale=0.8]{D:/pdm_data/Figures/Plume_vs_markov_PeInf.pdf}
+	\includegraphics[scale=0.8]{Figures/Plume_vs_markov_PeInf.pdf}
 	\caption{Plume transport for three snapshots without molecular diffusion.}
 	\label{fig:lvm_pdf_peinf}
 \end{figure}
@@ -91,14 +106,14 @@ $$
 
 \begin{figure}
 	\centering
-	\includegraphics[scale=0.8]{D:/pdm_data/Figures/LVM_pdf_comparison.pdf}
-	\caption{Log velocity magnitude PDF for DNS and Isochronous data for different Péclet values.}
+	\includegraphics[scale=0.8]{Figures/LVM_pdf_comparison.pdf}
+	\caption{Log velocity magnitude PDF for rough DNS data and isochronous data in different diffusion regimes.}
 	\label{fig:lvm_pdf_peinf}
 \end{figure}
 
 \begin{figure}
 	\centering
-	\includegraphics[scale=0.8]{D:/pdm_data/Figures/model_test.pdf}
-	\caption{Log velocity magnitude PDF for DNS and Isochronous data for different Péclet values.}
+	\includegraphics[scale=0.8]{Figures/model_test.pdf}
+	\caption{Plume displacement for different Péclet values.}
 	\label{fig:lvm_pdf_peinf}
 \end{figure}
