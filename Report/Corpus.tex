@@ -64,11 +64,19 @@ More precisely, the angle $\theta$, defined as
 \begin{equation}
 \cos \theta_n = S_{n} \frac{\textbf{u}_n}{||\textbf{u}_n||_2 }\cdot \frac{\textbf{U}}{||\textbf{U}||_2},
 \end{equation}
-where $S_{n,n-1}\in\{-1,1\}$ is a factor that changes its sign only if the velocity direction went across the plane spanned by $\textbf{U}$ and $\textbf{U}\cross\textbf{u}_{n-1}$ on the previous step, i.e.
+where $S_{n,n-1}\in\{-1,1\}$ is a factor that changes its sign only if the velocity direction went across the plane spanned by $\textbf{U}$ and $\textbf{U}\cross\textbf{u}_{n-1}$ on the previous step (c.f. Fig. \ref{fig:anglemeasuring}), i.e.
 \begin{equation}
 S_{n} = \mathrm{sign}_+(\textbf{u}_n\cdot [(\textbf{U}\cross\textbf{u}_{n-1})\cross \textbf{U}])\cdot S_{n-1} 
 \end{equation}
-whith sign$_+(x\geq 0)=1$ and sign$_+(x< 0)=-1$.
+with sign$_+(x\geq 0)=1$ and sign$_+(x< 0)=-1$.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.4\linewidth]{Figures/angle_measuring}
+	\caption{Illustration of the directional angle $\theta$. In the case where $\textbf{u}_{n+1} = \textbf{u}_a$, $S_{n+1}$ is positive since $\textbf{u}_a$ sits on the same side of the plane $\hat{n}$ as $\textbf{u}_n$. Inversely, if $\textbf{u}_{n+1} = \textbf{u}_b$, $\theta_{n+1}$ sign is opposed to $\theta_n$ sign. }
+	\label{fig:anglemeasuring}
+\end{figure}
+
 
 \section{Validation of \cite{Meyer2016} results for advection dominated regime $(\mathrm{Pe}=\infty)$}
 In order to validate the post processing algorithms, the main results of \cite{Meyer2016} have been reproduced by running \texttt{streamlinesnt3D} in particle tracking mode on the ETH Euler cluster (scicomp.ethz.ch/wiki/Euler) with zero diffusion ($D_m=0$), sampling at each step ($\mathrm{CSF}=1$) and for $2\times 10^4$ sample crossings.\\ 
@@ -84,12 +92,13 @@ It is interesting to compare those PDF with the distribution of the Eulerian flo
 	\label{fig:lvm_pdf_peinf}
 \end{figure}
 
-In the case of plume tracking, the transport results for early time have also been retrieved as shown on Figure blabla. The snapshots at later time have been left aside due to a lack of computational resources.
+In the case of plume tracking, the transport results for early time have also been retrieved as shown on Figure blabla. 
+The snapshots at later time have been left aside due to a lack of computational resources. 
 
 \begin{figure}
 	\centering
 	\includegraphics[scale=0.8]{Figures/Plume_vs_markov_PeInf.pdf}
-	\caption{Plume transport for three snapshots without molecular diffusion.}
+	\caption{Comparison between DNS plume dispersion results for $2\times 10^5$ particles (solid) and Markov model for $10^5$ particles (dashed) in three snapshots without molecular diffusion.}
 	\label{fig:lvm_pdf_peinf}
 \end{figure}
 
