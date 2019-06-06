@@ -70,43 +70,48 @@ S_{n} = \mathrm{sign}_+(\textbf{u}_n\cdot [(\textbf{U}\cross\textbf{u}_{n-1})\cr
 \end{equation}
 with sign$_+(x\geq 0)=1$ and sign$_+(x< 0)=-1$.
 
-
+To complete the description of the trajectory in the particle referential, a second angle $\beta$ is introduced. In practice, it is computed using increments $\Delta \beta_n$ measured as the orientation change of the orthogonal vector $\textbf{U}\cross \textbf{u}$ between two consecutive steps, i.e.
 \begin{equation}
-\sin\Delta\beta = \frac{||[\textbf{U}\cross \textbf{u}(t+dt)]\cross[\textbf{U}\cross \textbf{u}(t)]||_2}{||\textbf{U}\cross \textbf{u}(t+dt)||_2 \cdot||\textbf{U}\cross \textbf{u}(t)||_2}
+\cos\Delta\beta_n = \frac{[\textbf{U}\cross \textbf{u}_{n+1}]}{||\textbf{U}\cross \textbf{u}_{n+1}||_2}
+\cdot
+\frac{[\textbf{U}\cross \textbf{u}_{n}]}{||\textbf{U}\cross \textbf{u}_n||_2}
 \end{equation}
 
-\begin{figure}
-	\centering
-	\includegraphics[width=0.4\linewidth]{Figures/angle_measuring}
-	\caption{Illustration of the directional angle $\theta$. In the case where $\textbf{u}_{n+1} = \textbf{u}_a$, $S_{n+1}$ is positive since $\textbf{u}_a$ sits on the same side of the plane $\hat{n}$ as $\textbf{u}_n$. Inversely, if $\textbf{u}_{n+1} = \textbf{u}_b$, $\theta_{n+1}$ sign is opposed to $\theta_n$ sign. }
-	\label{fig:anglemeasuring}
-\end{figure}
+%\begin{figure}
+%	\centering
+%	\includegraphics[width=0.4\linewidth]{Figures/angle_measuring}
+%	\caption{Illustration of the directional angle $\theta$. In the case where $\textbf{u}_{n+1} = \textbf{u}_a$, $S_{n+1}$ is positive since $\textbf{u}_a$ sits on the same side of the plane $\hat{n}$ as $\textbf{u}_n$. Inversely, if $\textbf{u}_{n+1} = \textbf{u}_b$, $\theta_{n+1}$ sign is opposed to $\theta_n$ sign. }
+%	\label{fig:anglemeasuring}
+%\end{figure}
 
 
 \section{Validation of \cite{Meyer2016} results for advection dominated regime $(\mathrm{Pe}=\infty)$}
-In order to validate the post processing algorithms, the main results of \cite{Meyer2016} have been reproduced by running \texttt{streamlinesnt3D} in particle tracking mode on the ETH Euler cluster (scicomp.ethz.ch/wiki/Euler) with zero diffusion ($D_m=0$), sampling at each step ($\mathrm{CSF}=1$) and for $2\times 10^4$ sample crossings.\\ 
-Figure \ref{fig:lvm_pdf_peinf} displays the resulting log velocity magnitude PDF. 
-It is worth noting that the PDF obtained from isochronous series differs drastically from the rough DNS data by its wider distribution and its slower mean velocity.
-Thus, this illustrates efficiently how DNS data can lead to an underestimation on the small velocities due to the variable time step meant to accelerate the computation.\\
-The Markov model designed by \cite{Meyer2016} has been implemented as well and fits perfectly the PDF.
-It is interesting to compare those PDF with the distribution of the Eulerian flow of the sample (dashed line in Figure \ref{fig:lvm_pdf_peinf}).
-\begin{figure}
-	\centering
-	\includegraphics[scale=0.8]{Figures/LVM_pdf_DM=0.pdf}
-	\caption{Log velocity magnitude PDF for DNS and Isochronous data. The solid red line displays the skew normal probability distribution parametrized in \citet{Meyer2016} for Bentheimer 1000 sandstone. The dashed gray line represents the distribution of the velocity distrbution of the field among the sample. The particle has been tracked for $2\times 10^4$ passages and its statistics were measured at each time step.}
-	\label{fig:lvm_pdf_peinf}
-\end{figure}
+In order to validate the post processing methodology, the main results of \cite{Meyer2016} have been reproduced by running \texttt{streamlinesnt3D} on the ETH Euler cluster (scicomp.ethz.ch/wiki/Euler) with zero diffusion ($D_m=0$,$\mathrm{Pe}=\infty$).\\ 
 
-In the case of plume tracking, the transport results for early time have also been retrieved as shown on Figure blabla. 
-The snapshots at later time have been left aside due to a lack of computational resources. 
+For global transport behavior, the plume tracking results at early time have been reproduced as shown on Figure \ref{fig:plume_peinf}. 
+Despite the main tendency to move along the mean flow direction, one can observe some back flow ($x_1<0$) at $t=10^-2T$ and $t=10^0T$ that leads, at $t=10^2T$, to a separation of the plume in two groups : one with fast traveling particles that follows high velocity streamlines, the other with stuck particles that almost did not move due to their slow velocity.
+This disparity is of course problematic regarding ergodicity when sampling DNS data.
+Fortunately, using a maximum number of pathways across the sample instead of a limited time as stopping criterion prevents possible bias from the slow regions in single particle tracking simulations.
 
 \begin{figure}
 	\centering
 	\includegraphics[scale=0.8]{Figures/Plume_vs_markov_PeInf.pdf}
-	\caption{Comparison between DNS plume dispersion results for $2\times 10^5$ particles (solid) and Markov model for $10^5$ particles (dashed) in three snapshots without molecular diffusion.}
-	\label{fig:lvm_pdf_peinf}
+	\caption{Comparison between DNS results ($2\times 10^5$ particles, solid line) and Markov model ($10^5$ particles, dashed line) for plume displacement in average flow direction at $\mathrm{Pe}=\infty$. The DNS particles where placed randomly among the sample.}
+	\label{fig:plume_peinf}
 \end{figure}
 
+In a more microscopic point of view, Figure \ref{fig:lvm_pdf_peinf} displays the distribution of Lagrangian log velocity magnitude (LVM), $v = \ln[||\textbf{u}||_2/U]$. 
+It is worth noting that the PDF obtained from isochronous series differs drastically from the rough DNS data by its wider distribution and its slower mean velocity.
+Hence, it illustrates how rough DNS data needs post processing, leading otherwise to an underestimation on the small velocities due to the variable time step meant to accelerate the computation.\\
+The Markov process designed by \cite{Meyer2016} to model the LVM has been implemented as well and fits perfectly the PDF.
+Finally, one can notice that the isochronous PDF fits perfectly the sample Eulerian LVM distribution which can be seen as a good indicator of data ergodicity.
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.8]{Figures/LVM_pdf_DM=0.pdf}
+	\caption{Log velocity magnitude PDF for DNS and Isochronous data. The solid red line displays the skew normal probability distribution parametrized in \citet{Meyer2016} for Bentheimer 1000 sandstonet The dashed gray line represents the Eulerian LVM PDF of the field among the sample. The particle has been tracked for $2\times 10^4$ passages and its statistics were measured at each time step.}
+	\label{fig:lvm_pdf_peinf}
+\end{figure}
 $$
 \hat R(k) = \frac{1}{n-k} \sum_{t=1}^{n-k} \left(\frac{X_t-\mu_Y}{\sigma_X}\right)\left(\frac{Y_t-\mu_Y}{\sigma_Y}\right) \quad\textrm{where}\quad \{Y_1,Y_2,...,Y_{n-k}\} := \{X_{k+1},X_{k+2},...,X_{n}\} 
 $$
