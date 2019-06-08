@@ -77,12 +77,12 @@ To complete the description of the trajectory in the particle referential, a sec
 \frac{[\textbf{U}\cross \textbf{u}_{n}]}{||\textbf{U}\cross \textbf{u}_n||_2}
 \end{equation}
 
-%\begin{figure}
-%	\centering
-%	\includegraphics[width=0.4\linewidth]{Figures/angle_measuring}
-%	\caption{Illustration of the directional angle $\theta$. In the case where $\textbf{u}_{n+1} = \textbf{u}_a$, $S_{n+1}$ is positive since $\textbf{u}_a$ sits on the same side of the plane $\hat{n}$ as $\textbf{u}_n$. Inversely, if $\textbf{u}_{n+1} = \textbf{u}_b$, $\theta_{n+1}$ sign is opposed to $\theta_n$ sign. }
-%	\label{fig:anglemeasuring}
-%\end{figure}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.4\linewidth]{Figures/angle_measuring}
+	\caption{Illustration of the directional angle $\theta$. In the case where $\textbf{u}_{n+1} = \textbf{u}_a$, $S_{n+1}$ is positive since $\textbf{u}_a$ sits on the same side of the plane $\hat{n}$ as $\textbf{u}_n$. Inversely, if $\textbf{u}_{n+1} = \textbf{u}_b$, $\theta_{n+1}$ sign is opposed to $\theta_n$ sign. }
+	\label{fig:anglemeasuring}
+\end{figure}
 
 
 \section{Validation of \cite{Meyer2016} results for advection dominated regime $(\mathrm{Pe}=\infty)$}
@@ -93,7 +93,7 @@ Despite the main tendency to move along the mean flow direction, one can observe
 This disparity is of course problematic regarding ergodicity when sampling DNS data.
 Fortunately, using a maximum number of pathways across the sample instead of a limited time as stopping criterion prevents possible bias from the slow regions in single particle tracking simulations.
 
-\begin{figure}
+\begin{figure}[h!]
 	\centering
 	\includegraphics[scale=0.8]{Figures/Plume_vs_markov_PeInf.pdf}
 	\caption{Comparison between DNS results ($2\times 10^5$ particles, solid line) and Markov model ($10^5$ particles, dashed line) for plume displacement in average flow direction at $\mathrm{Pe}=\infty$. The DNS particles where placed randomly among the sample.}
@@ -109,30 +109,39 @@ Finally, one can notice that the isochronous PDF fits perfectly the sample Euler
 \begin{figure}
 	\centering
 	\includegraphics[scale=0.8]{Figures/LVM_pdf_DM=0.pdf}
-	\caption{Log velocity magnitude PDF for DNS and Isochronous data. The solid red line displays the skew normal probability distribution parametrized in \citet{Meyer2016} for Bentheimer 1000 sandstonet The dashed gray line represents the Eulerian LVM PDF of the field among the sample. The particle has been tracked for $2\times 10^4$ passages and its statistics were measured at each time step.}
+	\caption{Log velocity magnitude PDF for DNS and Isochronous data. The solid red line displays the skew normal probability distribution parametrized in \citet{Meyer2016} for Bentheimer 1000 sandstone The dashed gray line represents the Eulerian LVM PDF of the field among the sample. The particle has been tracked for $2\times 10^4$ passages and its statistics were measured at each time step.}
 	\label{fig:lvm_pdf_peinf}
 \end{figure}
 $$
 \hat R(k) = \frac{1}{n-k} \sum_{t=1}^{n-k} \left(\frac{X_t-\mu_Y}{\sigma_X}\right)\left(\frac{Y_t-\mu_Y}{\sigma_Y}\right) \quad\textrm{where}\quad \{Y_1,Y_2,...,Y_{n-k}\} := \{X_{k+1},X_{k+2},...,X_{n}\} 
 $$
 
-\chapter{Experiments with finite Péclet values}
+\chapter{Advection diffusion regime ($\mathrm{Pe}<\infty$)}
 
 \section{Plume tracking}
-
-\section{Particle tracking}
-
-
-\begin{figure}
-	\centering
-	\includegraphics[scale=0.8]{Figures/LVM_pdf_comparison.pdf}
-	\caption{Log velocity magnitude PDF for rough DNS data and isochronous data in different diffusion regimes.}
-	\label{fig:lvm_pdf_peinf}
-\end{figure}
-
-\begin{figure}
+\begin{figure}[h!]
 	\centering
 	\includegraphics[scale=0.8]{Figures/model_test.pdf}
 	\caption{Plume displacement for different Péclet values.}
 	\label{fig:lvm_pdf_peinf}
+\end{figure}
+
+\section{Particle tracking}
+In order to measure quantitatively the influence of the molecular diffusion coefficient, the log velocity magnitude distribution results showed at Figure \ref{fig:lvm_pdf_peinf} have been extended for finite Péclet values ($\mathrm{Pe}\in[10^{-1};10^3]$) leading to the results depicted by Figure \ref{fig:lvm_pdf_pe}.\\
+At large Péclet number ($\mathrm{Pe}\approx 10^3$), one can observe that the LVM histogram is shifted to the left, almost joining the DNS data. 
+This can be explained by the fact that a small amount of diffusion enables the particles to exit quicker slow regions and join the main, rapid streamlines.
+Moreover, it is worth noting that this shift is not a statistical artifact, as for the DNS histogram, but a real modification of the particle dynamic.\\
+For lower Péclet values ($\mathrm{Pe}\approx10^1$), the particles are more and more able to explore the velocity field independently from their speed, sampling again low velocity regions which makes the LVM distribution converges to the fully advective case.
+In the end, both fully advective or diffusive regimes appear to lead to an homogeneous sampling of the Eulerian velocity spectrum.\\
+This whole dynamic put in evidence the fact that, indeed, a small amount of molecular diffusion impeaches stagnation in low velocity region but it can also, at lower Péclet value, reroute fast traveling particles to slower streamlines.
+
+In a more practical point of view, controlling the Péclet number could, thus, be a game changer in a numerous application. If the objective is the rapidity of the transport regardless its homogeneity, a finite, large Péclet value is preferable. On the other side, a low Péclet value can be useful in the case where the solute cannot be wasted or if it has to diffuse homogeneously in the environment.\\
+
+It is worth noting that the diffusion coefficient affects the DNS distributions as well because of the structure of the particle tracking algorithm whose time step is defined as the minimum between a velocity dependent, advective time step and a constant, diffusive one.
+At finite Péclet value, the diffusive time will often be smaller than the advective one, regardless the current velocity, leading to an isochronous time step simulation.\\
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=0.5]{Figures/LVM_pdf_comparison.pdf}
+	\caption{Log velocity magnitude PDF for rough DNS data and isochronous data in different diffusion regimes. For advection-diffusion cases, the simulations were stopped after the same number of steps than the advective only regime ($\approx6\times 10^6$ steps) }
+	\label{fig:lvm_pdf_pe}
 \end{figure}
