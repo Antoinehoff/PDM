@@ -17,3 +17,4 @@ Report/*
 !Report/*.tex
 
 pdm_data - Raccourci.lnk
+*.bib
