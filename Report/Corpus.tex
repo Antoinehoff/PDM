@@ -89,53 +89,72 @@ To complete the description of the trajectory in Lagrangian referential, a secon
 
 \section{Validation of \cite{Meyer2016} results for advection dominated regime $(\mathrm{Pe}=\infty)$}
 In order to validate the post processing methodology, the main results of \cite{Meyer2016} have been reproduced by running \texttt{streamlinesnt3D} on the ETH Euler cluster (scicomp.ethz.ch/wiki/Euler) without molecular diffusion ($D_m=0$ or $\mathrm{Pe}=\infty$).\\ 
-
-In the case of global transport behavior, the plume tracking results at early time have been reproduced as shown on Figure \ref{fig:plume_peinf}. 
-Similarly to \cite{Meyer2016}, one can observe that, despite the main tendency to move along the mean flow direction, some back flow ($x_1<0$) appears at $t=10^-2T$ and $t=10^0T$. 
-At larger time ($t=10^2T$), this stagnancy leads to a separation of the plume in two groups : one with fast traveling particles that follows rapid streamlines, the other with slow moving particles that resides in the boundary layer of the solid domain.
-This disparity is of course problematic regarding ergodicity when sampling DNS data.
-For plume tracking, number of particle has been adjusted to be large enough to represents correctly the proportion between free and stuck particles.
-In the case of single particle tracking, a maximum number of pathways across the sample has been set as simulation stopping criterium in order to prevents possible bias from the slow regions in single particle tracking simulations.
-\textit{However, these solutions will be modified for finite Péclet regime as discussed further. }
-
-\begin{figure}[h!]
+\begin{figure}[h]
 	\centering
-	\includegraphics[scale=0.8]{Figures/Plume_vs_markov_PeInf.pdf}
-	\caption{Comparison between DNS results ($2\times 10^5$ particles, solid line) and Markov model ($10^5$ particles, dashed line) for plume displacement in average flow direction at $\mathrm{Pe}=\infty$. The DNS particles where placed randomly among the sample.}
+	\includegraphics[scale=0.7]{Figures/Plume_vs_markov_PeInf.pdf}
+	\caption{Comparison between DNS results ($N_p=2\times 10^5$ particles, solid line) and Markov model ($10^5$ particles, dashed line) for plume displacement in average flow direction at $\mathrm{Pe}=\infty$. The DNS particles where placed randomly among the sample.}
 	\label{fig:plume_peinf}
 \end{figure}
+
+In the case of global transport behavior, the plume tracking results at early time have been reproduced as shown on Figure \ref{fig:plume_peinf}. 
+Similarly to \cite{Meyer2016}, one can notice some back flow ($x_1<0$) appearing at $t=10^-2T$ and $t=10^0T$, despite the main tendency to move along the mean flow direction.  
+At larger time ($t=10^2T$), this stagnancy leads to a separation of the plume in two groups : one with fast traveling particles that follows rapid streamlines, the other with slow moving particles that resides in the boundary layer of the solid domain.\\
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.7]{Figures/plume_density_PeInf.pdf}
+	\caption{Approximated plume concentration for three different time snapshot. The scalar field $n_p(x,y)$ has been computed by representing each particle as a uni-variate 2D Gaussian distribution on a square equidistant grid of resolution $N^2=50^2$ with mean $(\mu_x,\mu_y)=(x_i,y_i)$ and variance $\sigma_x = \sigma_y = \Delta x^2$ where $\Delta x$ is the grid cell length. By construction, $N_p = \int\int n_p(x,y) dx\, dy$.}
+	\label{fig:plume_density_peinf}
+\end{figure}
+These results can also be appreciated with a 2D density plot of the plume as shown on Figure \ref{fig:plume_density_peinf}. 
+The quasi circular shape of the plume density at $(x\approx 0, t=10^2 T)$ suggests that the displacement of the stuck particles appears to be independent from the mean flow direction.
+
+The versatile behavior enlighten by the plume dispersion dynamic can be problematic regarding ergodicity when sampling DNS data.
+For plume tracking, the number of particle has to be large enough to represent correctly the proportion between free and stuck particles.
+This has been verified by checking that the distribution was stationary with respect to the number of particles.\\
+In the case of single particle tracking, a minimal number of pathways across the sample has used as simulation stopping criterion instead of a usual time limit in order to wait for the stuck particles to leave slow velocity regions.
+\textit{However, these solutions had to be adapted in finite Péclet simulation as discussed further. }
 
 In a microscopic point of view, Figure \ref{fig:lvm_pdf_peinf} displays the distribution of Lagrangian log velocity magnitude (LVM), $v = \ln[||\textbf{u}||_2/U]$. 
 It is worth noting that, as expected, the PDF obtained from isochronous series differs drastically from the rough DNS data by its wider distribution and its slower mean velocity.
 Hence, it illustrates the fact that DNS data contain a statistical bias leading to an underestimation of the small velocities due to the variable simulation time step, meant to accelerate the computation.\\
-In the case of isochronous data, the PDF fits perfectly the sample Eulerian LVM distribution which can be seen as a good indicator of data ergodicity since it means that the sample velocity spectrum has been evenly visited.
-Finally, the Markov process designed by \cite{Meyer2016} to model the LVM has been implemented in a \textsc{Python} script as well and fits perfectly the isochronous PDF.
+In the case of isochronous data, the PDF fits perfectly the Eulerian LVM distribution which can be seen as a good indicator of data ergodicity showing the sample velocity spectrum has been evenly visited.\\
+Finally, the Markov process designed by \cite{Meyer2016} to model the particle displacement has been implemented in a \textsc{Python} script and the obtained results fit perfectly the isochronous PDF and are in good agreement with the plume displacement showed on Figure \ref{fig:plume_peinf} as well.
 
-\begin{figure}
+\begin{figure}[h!]
 	\centering
-	\includegraphics[scale=0.8]{Figures/LVM_pdf_DM=0.pdf}
+	\includegraphics[scale=0.7]{Figures/LVM_pdf_DM=0.pdf}
 	\caption{Log velocity magnitude PDF for DNS and Isochronous data after $2\times 10^4$ crossings among the sample. The skew normal probability distribution parametrized in \citet{Meyer2016} for Bentheimer 1000 sandstone (solid red line) and the Eulerian velocity distribution of the sample (dashed gray line) are displayed as well. The particle has been tracked for s and its statistics were measured at each time step.}
 	\label{fig:lvm_pdf_peinf}
 \end{figure}
 
-As a last validation tool, the auto-correlation has been computed using an unbiased formula \eqref{eq:autocorr} for both LVM $v$ (Figure \ref{fig:autocorrv_peinf}) and directional angle $\theta$ (Figure \ref{fig:autocorrt_peinf}). 
-
-It can be interesting to compare the auto-correlation of $\theta$ with its probability distribution on a polar plot. 
-Indeed, although a zero mean is measured in the values of $\theta$, its PDF appears to be split in two even area centered at $\theta\approx\pm\pi/4$ (cf. polar plot on Figure \ref{fig:autocorrt_peinf}) which means that the particle velocity almost never oriented along the mean flow direction.
-The auto-correlation curve explains by its quite long correlation length the  
-
-
-
+As an additional validation tool, the auto-correlation has been computed using an unbiased formula \eqref{eq:autocorr} for both LVM $v$ (Figure \ref{fig:autocorrv_peinf}) and directional angle $\theta$ (Figure \ref{fig:autocorrt_peinf}).
 \begin{equation}
-\hat R(k) = \frac{1}{n-k} \sum_{t=1}^{n-k} \left(\frac{X_t-\mu_Y}{\sigma_X}\right)\left(\frac{Y_t-\mu_Y}{\sigma_Y}\right) \quad\textrm{where}\quad \{Y_1,Y_2,...,Y_{n-k}\} := \{X_{k+1},X_{k+2},...,X_{n}\} 
+\hat R_X(k) = \frac{1}{n-k} \sum_{i=1}^{n-k} \left(\frac{X_i-\mu_Y}{\sigma_X}\right)\left(\frac{Y_i-\mu_Y}{\sigma_Y}\right) \quad\textrm{where}\quad \{Y_i\}_{i=1}^{n-k} := \{X_{i}\}_{i=k+1}^{n}
 \label{eq:autocorr}
 \end{equation}
+On one hand, the isochronous LVM auto-correlation shows a steep slope at small $t$ followed by a more gently decrease up to $10T$.
+On the other hand, a much longer correlation length is observed\footnote{Comparing $t$ and $l$ with $l=Ut$ where $U = 4.6\times 10^{-6}$} for the equidistant directional angle $\theta$.
+This illustrates the fact that the porous medium is composed of oriented galleries among which the flow velocity may vary rapidly.
+Moreover, the PDF $p_\theta(l)$ showed on the polar plot of Figure \ref{fig:autocorrt_peinf} is split in two even areas centered at $\theta\approx\pm\pi/4$ and shows that the particle velocity is almost never oriented along the mean flow direction. 
+In that sense, Figure \ref{fig:bentheimer300cuts} demonstrated that it is not possible to cross the media following a straight line.\\
+Hence, the particle displacement at advection dominated regime shows a fast varying velocity coupled with a highly correlated orientation that is regularly subject to abrupt changes.
 
-\begin{figure}
+\begin{figure}[h!]
 	\centering
-	\includegraphics[scale=0.8]{Figures/autocorr_theta_PeInf.pdf}
-	\caption{Directional angle $\theta$ auto-correlation and its distribution on a polar representation. $\hat{R}_\theta(l)$ has been computed for $n=10^7$ points when $l_{max}\approx 4\times10^4 \Delta l$}
-	\label{fig:autocorrt_peinf}
+	\begin{subfigure}[b]{0.25\textwidth}
+		\centering
+		\includegraphics[scale=0.7]{Figures/v_autocorr_PeInf_small.pdf}
+		\caption{LVM auto-correlation}
+		\label{fig:autocorrt_peinf}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.7\textwidth}
+		\centering
+		\includegraphics[scale=0.7]{Figures/autocorr_theta_PeInf.pdf}
+		\caption{Directional angle auto-correlation with its polar PDF.}
+	\end{subfigure}
+	\caption{Auto-correlations $\hat{R}_X(k)$ \eqref{eq:autocorr} on a range of $n=10^7$ points. These curves are evaluated on $t/T$ and $l/L$ ranges corresponding to $k_{max}<10^4 \ll n$.}
+	\label{fig:autocorrv_peinf}
 \end{figure}
 
 \chapter{Advection diffusion regime ($\mathrm{Pe}<\infty$)}
@@ -143,15 +162,15 @@ The auto-correlation curve explains by its quite long correlation length the
 \section{Plume tracking}
 \begin{figure}[h!]
 	\centering
-	\includegraphics[scale=0.8]{Figures/model_test.pdf}
+	\includegraphics[scale=0.7]{Figures/model_test.pdf}
 	\caption{Plume displacement for different Péclet values.}
 	\label{fig:lvm_pdf_peinf}
 \end{figure}
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[scale=0.8]{Figures/plume_density.pdf}
-	\caption{Particle distribution of the plumes for three different Péclet values at three different times. The scalar field has been computed by representing each particle as a uni-variate Gaussian distribution on a square equidistant grid of resolution $N^2=50^2$ with mean $(\mu_x,\mu_y)=(x_i,y_i)$ and variance $\sigma_x = \sigma_y = \Delta x^2$ where $\Delta x$ is the grid cell length.}
+	\includegraphics[scale=0.7]{Figures/plume_density.pdf}
+	\caption{Particle distribution of the plumes for three different Péclet values at three different times. See Figure \ref{fig:plume_density_peinf} for more details.}
 	\label{fig:plume_density}
 \end{figure}
 
@@ -171,7 +190,7 @@ It is worth noting that the diffusion coefficient affects the DNS distributions 
 At finite Péclet value, the diffusive time will often be smaller than the advective one, regardless the current velocity, leading to an isochronous time step simulation.\\
 \begin{figure}[h!]
 	\centering
-	\includegraphics[scale=0.8]{Figures/LVM_pdf_comparison.pdf}
+	\includegraphics[scale=0.7]{Figures/LVM_pdf_comparison.pdf}
 	\caption{Log velocity magnitude PDF for rough DNS data and isochronous data in different diffusion regimes. For advection-diffusion cases, the simulations were stopped after the same number of steps than the advective only regime ($\approx6\times 10^6$ steps) }
 	\label{fig:lvm_pdf_pe}
 \end{figure}
