@@ -46,9 +46,9 @@ The sampled data form thus an heterogeneous time series that should be post proc
 	\end{algorithmic}
 \end{algorithm}
 
-Hence, a post processing script has been implemented in \textsc{Python} using \textsc{Scipy} packages (\cite{scipy}) to transform the rough output of the program, denoted DNS, into the isochronous time series needed for the statistical analysis.
+Hence, a post processing treatment has been implemented in \textsc{Python} using \textsc{Scipy} packages to transform the output of the program, denoted DNS, into the isochronous time series needed for the statistical analysis.
 Algorithm \ref{alg:isochronous} shows the method used to perform the isochronous transformation of the DNS data which consists in using equidistantly linear interpolation.
-It is worth noting that the average DNS time step has been chosen as the equidistant time interval since it enables to keep the length of the resulting isochronous series comparable to the original one.\\
+It is worth noting that the average DNS time step has been chosen as the equidistant time interval since it enables to keep the size of the resulting isochronous series comparable to the original one.\\
 \begin{figure}
 	\centering
 	\includegraphics[scale=0.8]{Figures/check_iso_transf.pdf}
@@ -56,21 +56,23 @@ It is worth noting that the average DNS time step has been chosen as the equidis
 	\label{fig:checkisotransf}
 \end{figure}
 Figure \ref{fig:checkisotransf} displays the results of Algorithm \ref{alg:isochronous} for three independent simulations.
-It can be observed that oscillations with period smaller than one half of the average time step cannot be sampled by the isochronous series (see Nyquist–Shannon sampling theorem) which makes this process similar to a low pass filter in signal processing.
-Fortunately, the statistics presented previously should not be affected by such loss of information.\\
+It can be observed that the highest frequencies of the data cannot be sampled by the isochronous series (see Nyquist–Shannon sampling theorem) which makes this process similar to a low pass filter in signal processing.
+Fortunately, the statistics of interest should not be affected by such loss of information. 
+It could be however more problematic in a Fourier analysis of the data.\\
 
-This method has been used in a similar way to compute equidistant time series as for the directional angle, $\theta (t)\in[-\pi,\pi]$, which indicates the orientation of the particle velocity vector, $\textbf{u}_n :=\textbf{u}(t_n)$, with respect to the mean flow direction $\textbf{U}$.
-More precisely, the angle $\theta$, defined as
+A similar version of Algorithm \ref{alg:isochronous} has also been used to compute equidistant time series as for the directional angle, $\theta_n:=\theta(l_n)\in[-\pi,\pi]$ where $l_n = l_{n-1} + ||\textbf{u}_n||_2 \Delta t$.
+More precisely, the angle $\theta$ indicates the orientation of the particle velocity vector, $\textbf{u}_n :=\textbf{u}(t_n)$, with respect to the mean flow direction $\textbf{U}$ (see Figure \ref{fig:anglemeasuring}). 
+Similarly to \citet{Meyer2016}, it is geometrically defined as
 \begin{equation}
 \cos \theta_n = S_{n} \frac{\textbf{u}_n}{||\textbf{u}_n||_2 }\cdot \frac{\textbf{U}}{||\textbf{U}||_2},
 \end{equation}
-where $S_{n,n-1}\in\{-1,1\}$ is a factor that changes its sign only if the velocity direction went across the plane spanned by $\textbf{U}$ and $\textbf{U}\cross\textbf{u}_{n-1}$ on the previous step (c.f. Fig. \ref{fig:anglemeasuring}), i.e.
+where $S_{n,n-1}\in\{-1,1\}$ is a factor that changes its sign if the velocity direction went across the plane spanned by $\textbf{U}$ and $\textbf{U}\cross\textbf{u}_{n-1}$ on the previous step as shown in detail on Figure \ref{fig:anglemeasuring}), i.e.
 \begin{equation}
 S_{n} = \mathrm{sign}_+(\textbf{u}_n\cdot [(\textbf{U}\cross\textbf{u}_{n-1})\cross \textbf{U}])\cdot S_{n-1} 
 \end{equation}
 with sign$_+(x\geq 0)=1$ and sign$_+(x< 0)=-1$.
 
-To complete the description of the trajectory in the particle referential, a second angle $\beta$ is introduced. In practice, it is computed using increments $\Delta \beta_n$ measured as the orientation change of the orthogonal vector $\textbf{U}\cross \textbf{u}$ between two consecutive steps, i.e.
+To complete the description of the trajectory in Lagrangian referential, a second angle $\beta(l)$ is introduced. In practice, it is computed using increments $\Delta \beta_n$ measured as the orientation change of the orthogonal vector $\textbf{U}\cross \textbf{u}$ between two consecutive steps, i.e.
 \begin{equation}
 \tan\Delta\beta_n = \frac{||\textbf{u}_\perp||_2}{||\textbf{u}_{n+1}-\textbf{u}_\perp||_2}
 \quad\textrm{with}\quad
@@ -86,12 +88,16 @@ To complete the description of the trajectory in the particle referential, a sec
 
 
 \section{Validation of \cite{Meyer2016} results for advection dominated regime $(\mathrm{Pe}=\infty)$}
-In order to validate the post processing methodology, the main results of \cite{Meyer2016} have been reproduced by running \texttt{streamlinesnt3D} on the ETH Euler cluster (scicomp.ethz.ch/wiki/Euler) with zero diffusion ($D_m=0$,$\mathrm{Pe}=\infty$).\\ 
+In order to validate the post processing methodology, the main results of \cite{Meyer2016} have been reproduced by running \texttt{streamlinesnt3D} on the ETH Euler cluster (scicomp.ethz.ch/wiki/Euler) without molecular diffusion ($D_m=0$ or $\mathrm{Pe}=\infty$).\\ 
 
-For global transport behavior, the plume tracking results at early time have been reproduced as shown on Figure \ref{fig:plume_peinf}. 
-Despite the main tendency to move along the mean flow direction, one can observe some back flow ($x_1<0$) at $t=10^{-2}T$ and $t=10^0T$ that leads, at $t=10^2T$, to a separation of the plume in two groups : one with fast traveling particles that follows high velocity streamlines, the other composed of stuck particles that almost did not move due to their slow velocity.
+In the case of global transport behavior, the plume tracking results at early time have been reproduced as shown on Figure \ref{fig:plume_peinf}. 
+Similarly to \cite{Meyer2016}, one can observe that, despite the main tendency to move along the mean flow direction, some back flow ($x_1<0$) appears at $t=10^-2T$ and $t=10^0T$. 
+At larger time ($t=10^2T$), this stagnancy leads to a separation of the plume in two groups : one with fast traveling particles that follows rapid streamlines, the other with slow moving particles that resides in the boundary layer of the solid domain.
 This disparity is of course problematic regarding ergodicity when sampling DNS data.
-Fortunately, using a maximum number of pathways across the sample instead of a time limitation as stopping criterion prevents possible bias from the slow regions in single particle tracking simulations.
+For plume tracking, number of particle has been adjusted to be large enough to represents correctly the proportion between free and stuck particles.
+In the case of single particle tracking, a maximum number of pathways across the sample has been set as simulation stopping criterium in order to prevents possible bias from the slow regions in single particle tracking simulations.
+\textit{However, these solutions will be modified for finite Péclet regime as discussed further. }
+
 \begin{figure}[h!]
 	\centering
 	\includegraphics[scale=0.8]{Figures/Plume_vs_markov_PeInf.pdf}
@@ -99,11 +105,11 @@ Fortunately, using a maximum number of pathways across the sample instead of a t
 	\label{fig:plume_peinf}
 \end{figure}
 
-In a more microscopic point of view, Figure \ref{fig:lvm_pdf_peinf} displays the distribution of Lagrangian log velocity magnitude (LVM), $v = \ln[||\textbf{u}||_2/U]$. 
-It is worth noting that the PDF obtained from isochronous series differs drastically from the rough DNS data by its wider distribution and its slower mean velocity.
-Hence, it illustrates how rough DNS data needs post processing, leading otherwise to an underestimation on the small velocities due to the variable time step meant to accelerate the computation.\\
-The Markov process designed by \cite{Meyer2016} to model the LVM has been implemented as well and fits perfectly the PDF.
-Finally, one can notice that the isochronous PDF fits perfectly the sample Eulerian LVM distribution which can be seen as a good indicator of data ergodicity.
+In a microscopic point of view, Figure \ref{fig:lvm_pdf_peinf} displays the distribution of Lagrangian log velocity magnitude (LVM), $v = \ln[||\textbf{u}||_2/U]$. 
+It is worth noting that, as expected, the PDF obtained from isochronous series differs drastically from the rough DNS data by its wider distribution and its slower mean velocity.
+Hence, it illustrates the fact that DNS data contain a statistical bias leading to an underestimation of the small velocities due to the variable simulation time step, meant to accelerate the computation.\\
+In the case of isochronous data, the PDF fits perfectly the sample Eulerian LVM distribution which can be seen as a good indicator of data ergodicity since it means that the sample velocity spectrum has been evenly visited.
+Finally, the Markov process designed by \cite{Meyer2016} to model the LVM has been implemented in a \textsc{Python} script as well and fits perfectly the isochronous PDF.
 
 \begin{figure}
 	\centering
@@ -111,9 +117,24 @@ Finally, one can notice that the isochronous PDF fits perfectly the sample Euler
 	\caption{Log velocity magnitude PDF for DNS and Isochronous data after $2\times 10^4$ crossings among the sample. The skew normal probability distribution parametrized in \citet{Meyer2016} for Bentheimer 1000 sandstone (solid red line) and the Eulerian velocity distribution of the sample (dashed gray line) are displayed as well. The particle has been tracked for s and its statistics were measured at each time step.}
 	\label{fig:lvm_pdf_peinf}
 \end{figure}
-$$
+
+As a last validation tool, the auto-correlation has been computed using an unbiased formula \eqref{eq:autocorr} for both LVM $v$ (Figure \ref{fig:autocorrv_peinf}) and directional angle $\theta$ (Figure \ref{fig:autocorrt_peinf}). 
+
+It can be interesting to compare the auto-correlation of $\theta$ with its probability distribution on a polar plot. 
+Indeed, even though a zero mean is measured in the values of $\theta$, its PDF appears to be split in two even area centered at $\theta\approx\pm\pi/4$ (cf. polar plot on Figure \ref{fig:autocorrt_peinf}).
+
+
+\begin{equation}
 \hat R(k) = \frac{1}{n-k} \sum_{t=1}^{n-k} \left(\frac{X_t-\mu_Y}{\sigma_X}\right)\left(\frac{Y_t-\mu_Y}{\sigma_Y}\right) \quad\textrm{where}\quad \{Y_1,Y_2,...,Y_{n-k}\} := \{X_{k+1},X_{k+2},...,X_{n}\} 
-$$
+\label{eq:autocorr}
+\end{equation}
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.8]{Figures/autocorr_theta_PeInf.pdf}
+	\caption{Directional angle $\theta$ auto-correlation and its distribution on a polar representation. $\hat{R}_\theta(l)$ has been computed for $n=10^7$ points when $l_{max}\approx 4\times10^4 \Delta l$}
+	\label{fig:autocorrt_peinf}
+\end{figure}
 
 \chapter{Advection diffusion regime ($\mathrm{Pe}<\infty$)}
 
