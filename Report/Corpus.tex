@@ -72,15 +72,15 @@ with sign$_+(x\geq 0)=1$ and sign$_+(x< 0)=-1$.
 
 To complete the description of the trajectory in the particle referential, a second angle $\beta$ is introduced. In practice, it is computed using increments $\Delta \beta_n$ measured as the orientation change of the orthogonal vector $\textbf{U}\cross \textbf{u}$ between two consecutive steps, i.e.
 \begin{equation}
-\cos\Delta\beta_n = \frac{[\textbf{U}\cross \textbf{u}_{n+1}]}{||\textbf{U}\cross \textbf{u}_{n+1}||_2}
-\cdot
-\frac{[\textbf{U}\cross \textbf{u}_{n}]}{||\textbf{U}\cross \textbf{u}_n||_2}
+\tan\Delta\beta_n = \frac{||\textbf{u}_\perp||_2}{||\textbf{u}_{n+1}-\textbf{u}_\perp||_2}
+\quad\textrm{with}\quad
+\textbf{u}_\perp =\frac{\textbf{U}\cross\textbf{u}_{n}}{||\textbf{U}\cross\textbf{u}_n||_2}\cdot \textbf{u}_{n+1}\cdot\frac{\textbf{U}\cross\textbf{u}_{n}}{||\textbf{U}\cross\textbf{u}_n||_2}
 \end{equation}
 
 \begin{figure}
 	\centering
 	\includegraphics[width=0.4\linewidth]{Figures/angle_measuring}
-	\caption{Illustration of the directional angle $\theta$. In the case where $\textbf{u}_{n+1} = \textbf{u}_a$, $S_{n+1}$ is positive since $\textbf{u}_a$ sits on the same side of the plane $\hat{n}$ as $\textbf{u}_n$. Inversely, if $\textbf{u}_{n+1} = \textbf{u}_b$, $\theta_{n+1}$ sign is opposed to $\theta_n$ sign. }
+	\caption{Illustration of the directional angles $\theta$ and $\Delta \beta$. In the case where $\textbf{u}_{n+1} = \textbf{u}_a$, $S_{n+1}$ is positive since $\textbf{u}_a$ sits on the same side of the plane $\hat{n}$ as $\textbf{u}_n$. Inversely, if $\textbf{u}_{n+1} = \textbf{u}_b$, $\theta_{n+1}$ sign is opposed to $\theta_n$ sign. }
 	\label{fig:anglemeasuring}
 \end{figure}
 
@@ -89,10 +89,9 @@ To complete the description of the trajectory in the particle referential, a sec
 In order to validate the post processing methodology, the main results of \cite{Meyer2016} have been reproduced by running \texttt{streamlinesnt3D} on the ETH Euler cluster (scicomp.ethz.ch/wiki/Euler) with zero diffusion ($D_m=0$,$\mathrm{Pe}=\infty$).\\ 
 
 For global transport behavior, the plume tracking results at early time have been reproduced as shown on Figure \ref{fig:plume_peinf}. 
-Despite the main tendency to move along the mean flow direction, one can observe some back flow ($x_1<0$) at $t=10^-2T$ and $t=10^0T$ that leads, at $t=10^2T$, to a separation of the plume in two groups : one with fast traveling particles that follows high velocity streamlines, the other with stuck particles that almost did not move due to their slow velocity.
+Despite the main tendency to move along the mean flow direction, one can observe some back flow ($x_1<0$) at $t=10^{-2}T$ and $t=10^0T$ that leads, at $t=10^2T$, to a separation of the plume in two groups : one with fast traveling particles that follows high velocity streamlines, the other composed of stuck particles that almost did not move due to their slow velocity.
 This disparity is of course problematic regarding ergodicity when sampling DNS data.
-Fortunately, using a maximum number of pathways across the sample instead of a limited time as stopping criterion prevents possible bias from the slow regions in single particle tracking simulations.
-
+Fortunately, using a maximum number of pathways across the sample instead of a time limitation as stopping criterion prevents possible bias from the slow regions in single particle tracking simulations.
 \begin{figure}[h!]
 	\centering
 	\includegraphics[scale=0.8]{Figures/Plume_vs_markov_PeInf.pdf}
@@ -109,7 +108,7 @@ Finally, one can notice that the isochronous PDF fits perfectly the sample Euler
 \begin{figure}
 	\centering
 	\includegraphics[scale=0.8]{Figures/LVM_pdf_DM=0.pdf}
-	\caption{Log velocity magnitude PDF for DNS and Isochronous data. The solid red line displays the skew normal probability distribution parametrized in \citet{Meyer2016} for Bentheimer 1000 sandstone The dashed gray line represents the Eulerian LVM PDF of the field among the sample. The particle has been tracked for $2\times 10^4$ passages and its statistics were measured at each time step.}
+	\caption{Log velocity magnitude PDF for DNS and Isochronous data after $2\times 10^4$ crossings among the sample. The skew normal probability distribution parametrized in \citet{Meyer2016} for Bentheimer 1000 sandstone (solid red line) and the Eulerian velocity distribution of the sample (dashed gray line) are displayed as well. The particle has been tracked for s and its statistics were measured at each time step.}
 	\label{fig:lvm_pdf_peinf}
 \end{figure}
 $$
@@ -126,6 +125,14 @@ $$
 	\label{fig:lvm_pdf_peinf}
 \end{figure}
 
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=0.8]{Figures/plume_density.pdf}
+	\caption{Particle distribution of the plumes for three different Péclet values at three different times. The scalar field has been computed by representing each particle as a uni-variate Gaussian distribution on a square equidistant grid of resolution $N^2=50^2$ with mean $(\mu_x,\mu_y)=(x_i,y_i)$ and variance $\sigma_x = \sigma_y = \Delta x^2$ where $\Delta x$ is the grid cell length.}
+	\label{fig:plume_density}
+\end{figure}
+
+
 \section{Particle tracking}
 In order to measure quantitatively the influence of the molecular diffusion coefficient, the log velocity magnitude distribution results showed at Figure \ref{fig:lvm_pdf_peinf} have been extended for finite Péclet values ($\mathrm{Pe}\in[10^{-1};10^3]$) leading to the results depicted by Figure \ref{fig:lvm_pdf_pe}.\\
 At large Péclet number ($\mathrm{Pe}\approx 10^3$), one can observe that the LVM histogram is shifted to the left, almost joining the DNS data. 
@@ -141,7 +148,7 @@ It is worth noting that the diffusion coefficient affects the DNS distributions 
 At finite Péclet value, the diffusive time will often be smaller than the advective one, regardless the current velocity, leading to an isochronous time step simulation.\\
 \begin{figure}[h!]
 	\centering
-	\includegraphics[scale=0.5]{Figures/LVM_pdf_comparison.pdf}
+	\includegraphics[scale=0.8]{Figures/LVM_pdf_comparison.pdf}
 	\caption{Log velocity magnitude PDF for rough DNS data and isochronous data in different diffusion regimes. For advection-diffusion cases, the simulations were stopped after the same number of steps than the advective only regime ($\approx6\times 10^6$ steps) }
 	\label{fig:lvm_pdf_pe}
 \end{figure}
