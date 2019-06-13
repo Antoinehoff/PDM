@@ -248,15 +248,16 @@ On their side, \citet{Dentz2017} studied a synthetic porous media built by simul
 	p_W(x)=bkx^{k-1}\exp(bx^k)
 \end{equation}
 with parameters $b$ and $k$.\\
-They obtained a cubic sample of length $L=2$mm, porosity $\phi=0.35$, pore length $L_0=0.28$mm, tortuosity $\kappa=1.6$ and applied a pressure gradient at the boundaries that imposed a mean flow velocity $U=5.73\cdot10^{-6}$m/s. By changing the value of the microscopic diffusion coefficient $D$, they analyzed their sample on a range of Péclet number $Pe\in\{30, 3\cdot10^2, 5\cdot10^2, 10^3\}$.\\
-As said in the beginning of this chapter, \citeauthor{Dentz2017} demonstrated the unavailability of \eqref{eq:adv_diff} in complex porous medium by comparison of the analytical solution with a pore-scale Eulerian explicit DNS of \eqref{eq:stokes} and the local transport PDE
+They obtained a cubic sample of length $L=2$mm, porosity $\phi=0.35$, pore length $L_0=0.28$mm, tortuosity $\kappa=1.6$ and applied a pressure gradient at the boundaries that imposed a mean flow velocity $U=5.73\cdot10^{-6}$m/s. By changing the value of the microscopic diffusion coefficient $D$, they analyzed their sample on a range of Péclet number $Pe\in\{30, 3\times 10^2, 5\times 10^2, 10^3\}$.\\
+As said in the beginning of this chapter, \citeauthor{Dentz2017} demonstrated the unavailability of the macroscopic model \eqref{eq:adv_diff} in complex porous medium by comparison of the analytical solution with a pore-scale Eulerian explicit DNS solving Stokes equation\eqref{eq:stokes} coupled with the local transport PDE
 \begin{equation}\label{eq:micro_adv_diff}
 \pdv{t}c(\textbf{x},t)+\nabla\cdot[c(\textbf{x},t)\textbf{u}(\textbf{x},t)]-D \nabla^2c(\textbf{x},t)=0.
 \end{equation}
 As comparison criterion, they defined the breakthrough curves
-\[
+\begin{equation}
 f(x,t)=1-\frac{\int_0^L\int_0^L\,c(x_1=x, x_2,x_3,t)u_1(x_1,=x,x_2,x_3)dx_2\,dx_3}{\int_0^L\int_0^L\,u_1(x_1=x,x_2,x_3)dx_2\,dx_3}.
-\]
+\label{eq:DentzBTC}
+\end{equation}
 that expresses the particle-free fraction of the outlet plane setting $x=L$.\\
 They demonstrated that the macroscopic model \eqref{eq:adv_diff} was not able capture the tailing behavior of the pore-scale description at intermediate and long time ($t/T\approx 10^0$ and $\approx 10^2$, respectively).\\
 Thereafter, \citeauthor{Dentz2017} provided a physical model of the Eulerian velocity magnitude PDF $p_e(v\equiv\norm{\textbf{u}(\textbf{x})}_2)$  obtained from the DNS data. 
@@ -293,12 +294,12 @@ To catch the behavior of the DNS breakthrough curve at long time, \citeauthor{De
 They also replaced the pore-scale features used in the previously estimated PDF, i.e. pore-scale velocity $v$ and diffusion coefficient $D$, by macroscopic ones, i.e. mean Eulerian velocity $U$ and hydrodynamic coefficient $\mathcal{D}$.\\
 Moreover, they modeled the probability for a particle to be trapped in low velocity region with a Poisson distribution. 
 The parameters of the process has been estimated from the DNS breakthrough curve at long time resulting in $\gamma\approx1.25\cdot10^{-4}\tau_D$ and $\langle\tau_f\rangle\approx\frac{1}{2}\tau_D$ for the rate and the mean trapping time, respectively.\\
-By combination of the diffusive and the previous macroscopic trapping TDRWs, \citeauthor{Dentz2017} succeeded in reproducing the complete behavior of the DNS breakthrough curve with a stochastic model for $Pe\in\{30, 3\cdot10^2, 5\cdot10^2, 10^3\}$. This final model contained five main parameters  
+By combination of the diffusive and the previous macroscopic trapping TDRWs, \citeauthor{Dentz2017} succeeded in reproducing the complete behavior of the DNS breakthrough curve with a stochastic model for $Pe\in\{30, 3\times 10^2, 5\times 10^2, 10^3\}$. This final model contained five main parameters  
 \[v_0=2.1U,\quad\alpha=2.5,\quad l(\mathrm{Pe})=f(\mathrm{Pe})L_0,\quad\gamma\tau_D=2.5\cdot 10^{-4}\quad\textrm{and}\quad\langle\tau_f\rangle/\tau_D=0.5\]
-that can be counted as nine if one take into account that the step length $l$ has been slightly varied for each Péclet value ($f(\mathrm{Pe}=[30, 3\cdot10^2, 5\cdot10^2, 10^3])=[0.7,0.77,0.77,1]$) without any explicit explanation.\\
-Like \citeauthor{Puyguiraud2019}, \citeauthor{Dentz2017} focused their work on equidistant sampled Lagrangian velocity magnitude and for a unique porous sample. However, the stochastic models has been tested for different flow features of the dispersion mechanism. 
-One can see the breakthrough curve of \citeauthor{Dentz2017} as a more complex feature than the dynamic of Lagrangian PDF of \citeauthor{Puyguiraud2019} since it required to model accurately the time spent in slow velocity region.
-It would be interesting to measure the breakthrough curve resulting from the OU process of \citet{Puyguiraud2019}.
+that can be counted as nine if one take into account that the step length $l$ has been slightly varied for each Péclet value ($f(\mathrm{Pe}=[30, 3\times 10^2, 5\times 10^2, 10^3])=[0.7,0.77,0.77,1]$) without any explicit explanation.\\
+Like \citeauthor{Puyguiraud2019}, \citeauthor{Dentz2017} focused their work on equidistant sampled Lagrangian velocity magnitude and for a unique porous sample. However, the stochastic models have been tested for different flow features of the dispersion mechanism. 
+One can see the breakthrough curve of \citeauthor{Dentz2017} as a finer tool than the dynamic of Lagrangian PDF in \citeauthor{Puyguiraud2019} since it requires to take account accurately for the particles trapped in slow velocity region.
+It would be interesting to measure the breakthrough curve resulting from the OU process of \citet{Puyguiraud2019} for a better comparison  of their results.
 It can be expected that the TDRW would show better performances than the OU process since the former required to set five parameters and the latter only one.
 
 \subsection{Meyer et al. 2016}
