@@ -212,7 +212,7 @@ It is worth noting that the tailing behavior observed at large time for $\mathrm
 	\begin{minipage}{.49\textwidth}
 		\centering
 		\includegraphics[scale=0.7]{Figures/ul_eulerian_hist.pdf}
-		\caption{Longitudinal Eulerian velocity PDF among the Bentheimer 1000 sandstone.}
+		\caption{Longitudinal Eulerian velocity distribution among the Bentheimer 1000 sandstone.}
 		\label{fig:ul_eulerian_hist}
 	\end{minipage}
 \end{figure}
@@ -220,17 +220,19 @@ It is worth noting that the tailing behavior observed at large time for $\mathrm
 The influence of molecular diffusion on trapped particles can be appreciated in more details by analyzing the amount of negative longitudinal position particles similarly to the breakthrough curves \eqref{eq:DentzBTC} used by \citet{Dentz2017}.\\ 
 Indeed, Figure \ref{fig:backflow} shows firstly that the amount of particles with negative longitudinal displacement is non zero even in the fully advective regime due to the existence back flow velocity as shown on the Eulerian longitudinal velocity histogram presented on Figure \ref{fig:ul_eulerian_hist}.\\
 A common inflection point can also be observed at $t\approx3T$ from which the low $\mathrm{Pe}$ regimes start to have less late particles than the large ones.
-This critical point coincides with the transition between non-Fickian and Fickian dispersion observed by \citet[Fig. 2]{Meyer2016} and reported for the several Péclet values on Figure \ref{fig:plume_variance_xL} and Figure \ref{fig:plume_variance_xT}.
-However, smaller $Pe$ values appear to lead the transport in a fully Fickian regime which is an additional consequence of the fact that molecular diffusion erases the microscopic features of the medium velocity field.
-Asymptotically, one can expect that the diffusion transport will reduce to a moving Gaussian distribution with a shifting mean proportional to the average flow and with an increasing variance following the Fickian $t^{1/2}$ law.\\
+This critical point coincides with the transition between non-Fickian and Fickian dispersion observed by \citet[Fig. 2]{Meyer2016} and reported for the several Péclet values on \figref{fig:plume_variance_xL} and \figref{fig:plume_variance_xT}.\\
+One can observe on these figures how the Péclet number affects the non-Fickian regime observed initially at shorter time.
+While the advection driven regimes show a neat separation between the two expected slopes, the smallest $\Pe$ values appear to lead the transport in a fully Fickian regime. 
+This can be seen as an additional consequence of the fact that molecular diffusion erases the microscopic features of the medium velocity field, pushing the dispersion to behave in a macroscopic, averaged way.\\
+Asymptotically, one can expect that the diffusion transport will reduce to a moving Gaussian distribution with a shifting mean proportional to the average flow and with an increasing variance following the Fickian $t^{1/2}$ law in both transversal and longitudinal directions as shown for $\Pe = 1$ on \figref{fig:plume_variance_xL} and \figref{fig:plume_variance_xT}.\\
 
-\begin{figure}
+\begin{figure} [h!]
 	\centering
 	\begin{minipage}{.49\textwidth}
-	\centering
-	\includegraphics[scale=0.7]{Figures/plume_variance_xL.pdf}
-	\caption{Variance of the longitudinal displacement. The slopes $t^1$ (left) and $t^{1/2}$ (right) are depicted as dashed lines.}
-	\label{fig:plume_variance_xL}
+		\centering
+		\includegraphics[scale=0.7]{Figures/plume_variance_xL.pdf}
+		\caption{Variance of the longitudinal displacement. The slopes $t^1$ (left) and $t^{1/2}$ (right) are depicted as dashed lines.}
+		\label{fig:plume_variance_xL}
 	\end{minipage}
 	\begin{minipage}{.49\textwidth}
 		\centering
@@ -241,15 +243,17 @@ Asymptotically, one can expect that the diffusion transport will reduce to a mov
 \end{figure}
 
 \section{Particle dynamic}
-In order to measure quantitatively the microscopic influence of the molecular diffusion coefficient, the log velocity magnitude distribution results showed at Figure \ref{fig:lvm_pdf_peinf} have been extended for finite Péclet values leading to the results depicted on Figure \ref{fig:lvm_pdf_pe}.\\
-At large Péclet number ($\mathrm{Pe}\approx 10^4$), one can observe shifted to the left of the LVM histogram, almost joining the DNS one which can be explained by the fact that a small amount of diffusion enables the particles to exit quicker slow regions and join the main, rapid streamlines.
-Moreover, it is worth noting that this shift is not a statistical artifact, as for the DNS histogram, but a real modification of the particle dynamic.\\
-For lower Péclet values ($\mathrm{Pe}\approx10^1$), the particles are more and more able to explore the velocity field independently from their speed, sampling again low velocity regions which makes the LVM distribution converges to the fully advective case.
-In the end, both fully advective or diffusive regimes appear to lead to an homogeneous sampling of the Eulerian velocity spectrum.\\
+In order to measure quantitatively the microscopic influence of the molecular diffusion coefficient, the results on log velocity magnitude distribution presented by Figure \ref{fig:lvm_pdf_peinf} have been extended for finite Péclet values leading to \figref{fig:lvm_pdf_pe}.\\
+At large Péclet number ($\Pe>10^2$), one can observe that the isochronous histogram is shifted to the right with respect to the advective result, almost joining the DNS data.
+This can be explained by the fact that a small amount of diffusion will allow the particles to exit quicker the boundary layers and join the main, faster streamlines.
+Hence, it is worth noting that this shift is not a statistical artifact, as for the DNS histogram, but a real modification of the particle dynamic.\\
+For lower Péclet values ($\mathrm{Pe}\approx10^1$), the particles are more and more able to move independently from their experienced velocity, allowing them to leave not only slower stream lines but also quicker ones.
+This phenomena results in a return of the isochronous distribution to the Eulerian velocity PDF as for the fully advective case.
+At the end, both fully advective or diffusive regimes appear to lead to an homogeneous sampling of the Eulerian velocity spectrum.\\
 This whole dynamic put in evidence the fact that, indeed, a small amount of molecular diffusion impeaches stagnation in low velocity region but can also, at lower Péclet value, disturb the average velocity by rerouting fast traveling particles into slower streamlines.
 
 It is worth noting that the diffusion coefficient affects the DNS distributions as well because of the structure of the particle tracking algorithm whose time step is defined as the minimum between a velocity dependent, advective time step and a constant, diffusive one.
-At finite Péclet value, the diffusive time will often be smaller than the advective one, regardless the current velocity, leading to a quasi isochronous simulation.\\
+At finite Péclet value, the diffusive time-step will often be smaller than the advective one, regardless the current velocity, leading to a quasi isochronous simulation as shown on \figref{fig:time_step_pe}.\\
 \begin{figure}[h!]
 	\centering
 	\includegraphics[scale=0.7]{Figures/LVM_pdf_comparison.pdf}
@@ -257,14 +261,14 @@ At finite Péclet value, the diffusive time will often be smaller than the advec
 	\label{fig:lvm_pdf_pe}
 \end{figure}
 
-The change in the LVM distribution regarding the Péclet number is not sufficient to explain the large differences in transport observed on Figure \ref{fig:plume_density} in particular when comparing $\mathrm{Pe}=\infty$ with $\mathrm{Pe}<10$ cases which present very similar LVM distribution but drastically different transport dynamics.\\
-To understand these differences, the auto-correlation curves, presented on \figref{fig:autocorrv} and \figref{fig:autocorrt}, show a large variation regarding the Péclet number.
-In both velocity and direction auto-correlation, molecular diffusion appears to reduce significantly the correlation length as illustrated for velocity on \figref{fig:autocorr_t_c}.
-This results is in good agreement with the idea that molecular diffusion enable the particles to experiment different velocities quicker by jumping from a stream line to another.\\
-However, as the velocity auto-correlation shows completely uncorrelated behavior for $\Pe=10^-1$, the auto-correlation of $\theta$ seems to keep non zero values for a consequent length.
-Indeed, in the perspective of a particle passing through a pseudo cylindrical pore among the porous media, the velocity field can be approximated by a Poiseuille flow, varying continuously from zero at the solid boundaries to a maximum in the middle of the pore.
-However, in this description, the orientation of the flow field is almost unique which causes the particle to keep the same orientation until the next pore.
-In that sense, the cutting lengths depicted by \figref{fig:autocorr_l_c} show a convergence to one pore length.
+The changes observed in the LVM distribution regarding the Péclet number are not sufficient to explain the large differences in transport observed on Figure \ref{fig:plume_density} in particular when comparing $\mathrm{Pe}=\infty$ with $\mathrm{Pe}<10$ cases which present very similar LVM distribution but drastically different transport dynamics.\\
+To understand these differences, the auto-correlation curves of the particle velocity and the directional angle $\theta$ are presented on \figref{fig:autocorrv} and \figref{fig:autocorrt}, respectively.
+In both figures, molecular diffusion appears to reduce significantly the correlation length as illustrated on \figref{fig:autocorr_t_c} and \figref{fig:autocorr_l_c} which is in good agreement with the idea that molecular diffusion enables the particles to experiment different velocities quicker by jumping from a stream line to another.\\
+However, as the velocity auto-correlation shows completely uncorrelated behavior for $\Pe=10^{-1}$, the auto-correlation of $\theta$ seems to keep non zero values even at smallest Péclet value.\\
+Indeed, similarly to \citet{Dentz2017}, one can picture a small element in the porous sample as a pseudo cylindrical pore where the velocity field is a Poiseuille flow, varying continuously from zero at the solid boundaries to a maximum in the middle of the pore.
+The orientation of the flow field does not vary along this cylinder forcing the particle to keep the same orientation while experiencing a large velocity range until the next pore.
+In that sense, the cutting length depicted by \figref{fig:autocorr_l_c} shows a convergence to several pore length at small $\Pe$ which can represent an average length of our imaginary cylinder, while the cutting time of the velocity auto-correlation continues to decrease.
+
 \begin{figure}[h!]
 	\centering
 	\begin{subfigure}[b]{0.49\textwidth}
@@ -280,26 +284,20 @@ In that sense, the cutting lengths depicted by \figref{fig:autocorr_l_c} show a 
 		\caption{Cutting time $\tau_c$}
 		\label{fig:autocorr_t_c}
 	\end{subfigure}
-	\caption{Velocity auto-correlations $\hat{R}_u(k)$ \eqref{eq:autocorr} for various Péclet values with the same computation details as Figure \ref{fig:autocorr_peinf} and corresponding cutting times $\tau_c$. The cutting times are computed by finding the intersection point between the tangent $\partial\hat{R}_u/\partial t|_{t=0}$ and the abscissa, approximating $\partial\hat{R}_u/\partial t|_{t=0}$ with an $m$-points finite difference formula.}
-	\label{fig:autocorr}
-\end{figure}
-
-\begin{figure}[h!]
-	\centering
 	\begin{subfigure}[b]{0.49\textwidth}
 		\centering
 		\includegraphics[scale=0.7]{Figures/theta_autocorr.pdf}
-		\caption{Auto-correlation.}
+		\caption{Directional angle $\theta$ auto-correlation.}
 		\label{fig:autocorrt}
 	\end{subfigure}
 	\hfill
 	\begin{subfigure}[b]{0.49\textwidth}
 		\centering
-	\includegraphics[scale=0.7]{Figures/autocorr_l_c.pdf}
-	\caption{Cutting length $l_c$}
-	\label{fig:autocorr_l_c}
+		\includegraphics[scale=0.7]{Figures/autocorr_l_c.pdf}
+		\caption{Cutting length $l_c$}
+		\label{fig:autocorr_l_c}
 	\end{subfigure}
-	\caption{$\theta(l)$ auto-correlations $\hat{R}_\theta(l)$ \eqref{eq:autocorr} for various Péclet values with the same computation details as Figure \ref{fig:autocorr_peinf} and corresponding cutting lengths $l_c$. The cutting times lengths are computed by finding the intersection point between the tangent $\partial\hat{R}_\theta/\partial l|_{l=0}$ and the abscissa, approximating $\partial\hat{R}_\theta/\partial l|_{l=0}$ with an $m$-points finite difference formula.}
+	\caption{Auto-correlations $\hat{R}_X(k)$ \eqref{eq:autocorr} for isochronous particle velocity $u(t):=||\textbf{u}(t)||_2$ and equidistant directional angle $\theta(l)$ at various Péclet values with the same computation details as Figure \ref{fig:autocorr_peinf}. The cutting times $\tau_c$ and cutting lengths $l_c$ are computed by finding the intersection point between the tangent $\partial\hat{R}_X/\partial k|_{k=0}$ and the abscissa, approximating $\partial\hat{R}_X/\partial k|_{k=0}$ with an $m$-points finite difference formula. The solid line represents the value at $\Pe=\infty$.}
 	\label{fig:autocorr}
 \end{figure}
 
@@ -338,20 +336,32 @@ However, \figref{fig:compensated_variance_evolution} shows how the evolution of 
 
 \chapter{Conclusion}
 
-\subsubsection{Brief recap of the results}
-Finally, the studied Péclet range represented exhaustively the transition between two fundamentally different dispersion regimes.
-On one hand, Figure \ref{fig:backflow} showed that the smallest $\mathrm{Pe}$ value has an initial back flow proportion of nearly $50\%$ which is equivalent to a fully isotropic dispersion. 
-On the other hand, a clear transition between two asymptotic behavior can be observed on Figure \ref{fig:plume_variance_xL} . Large Péclet values lead to a transition from non-Fickian, $t^1$ law, to Fickian dispersion with time while high diffusion regimes tends to disperse following only the $t^{1/2}$ Fickian law.
+\textbf{Brief recap of the results}\\
+This work introduced mathematical and physical concepts in order to present, in an non-exhaustive way, research in porous media.
+Three recent papers have been presented and compared in order to reflect scientific works on the cutting edge of this topic.
+This short literature review motivated to follow the methodology of \citet{Meyer2016} by studying isochronous series.\\
+The semi-analytical particle tracking program developed by \citet{Meyer2017} has been handled and used on the high performance ETHZ Euler clusters.
+Aside from the adjustment of several \textsc{OpenMP} shared variables, the code porting has been done almost straightforwardly.
+Several simulations have been launched with computational time that varied from several CPU hours for $\Pe=\infty$ simulations to almost $100$ CPU days for the $10^5$ particles plume at $\Pe=10^0$.
 
-\subsubsection{Comparison with results presented in introduction}
+Despite a very powerful infrastructure, the computational resources that could be borrowed for this work could not exceed $128$GB of total RAM. 
+Knowing that each core in used required at least $\approx 16$GB in order to load the program data (3D voxel mesh and velocity field), the maximal number of cores used simultaneously for simulations could not exceed 8.
 
-One can confirm that the molecular diffusion effect on transport in Bentheimer sandstone becomes appreciable at Péclet value around $5\times 10^2$ as outlined by \citet{Meyer2016} in their conclusion.
+To process the output data of the simulations, \textsc{Python} scripts have been developed in order to transform DNS data in isochronous series. 
+As validation of these routines, the results of \citet{Meyer2016} in fully advective regime ($\Pe=\infty$) have been reproduced with success.
+These first results permitted also to put in evidence the large number of particle stuck with low velocity in the boundary layers of the solid domain.
+Features of the particle dynamic at advective regime have also been presented as the differences between particle velocity magnitude $u$ and directional angle $\theta$ auto-correlations.
 
-\subsubsection{Implications}
+Based on the success of these first results, the analysis has been extended to finite Péclet regimes ($\Pe\in[10^0, 10^4]$) in order to take account of molecular diffusion.
+The advection-diffusion simulations showed interesting results, in particular for $\Pe\approx 10^2$ where a transition in the dispersion behavior has been observed.
+This change in transport dynamic, predicted by \citet{Meyer2016}, has been interpreted as the property of molecular diffusion to free particles from the boundary layers, allowing them to travel more rapidly across the sample.
+At larger Péclet value, the advection dominated regime has been retrieved asymptotically, whereas transport at smaller Péclet seemed to converge to an isotropic Fickian dispersion, moving in the direction of the mean flow.
+
+
+\textbf{Implications}\\
 In a more practical point of view, choosing wisely the Péclet number could, thus, be a valuable asset in a numerous application. If the objective is the rapidity of the transport regardless its homogeneity, a finite, large Péclet value is preferable. On the other side, a low Péclet value can be useful in the case where the solute cannot be wasted or if it has to diffuse homogeneously in the environment.
 
-\subsubsection{Perspectives}
-
+\textbf{Perspectives}\\
 As diffusion increases, one can expect a homogenization of the transport behavior of different sample since, as it has been said previously, the particle movement becomes more and more independent from the microscopic flow feature as the diffusion increases.
 Asymptotically, low Péclet value dispersion shall follow macroscopic laws for any kind of sample, from simple bead pack structures to complex Estaillades ones.
 One can emit the hypothesis that, for $\mathrm{Pe}\ll 1$, the porous medium only alters the shift speed of the Gaussian shaped plume transport by its macroscopic porosity $\phi$. 
