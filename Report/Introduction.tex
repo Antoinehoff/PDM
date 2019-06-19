@@ -7,11 +7,11 @@
 	\label{fig:bentheimer300cuts}
 \end{figure}
 Diffusion in porous media is a common but complex natural phenomenon occurring in a wide domain of application, from carbon storage in geologic layers to advanced oil extraction and medicine metabolization.
-Despite of widely used macroscopic descriptions of transport such as the Fick's law of diffusion (\citet{Fick1855}) and Darcy law (\citet{Darcy1856}), complex porous media can present dispersion behaviors that requires a microscopic approach in order to predict correctly the transport dynamic.
+Despite of widely used macroscopic descriptions of transport such as the Fick's law of diffusion (\citet{Fick1855}) and Darcy law (\citet{Darcy1856}), complex porous media can present dispersion behaviors that require a microscopic approach in order to predict correctly the transport dynamic.
 For example, the Bentheimer sandstone presents, at microscopic scale, very tortuous cuts with a small solid void ratio called porosity (c.f. Figure \ref{fig:bentheimer300cuts} left).
-The complexity of this sample is also put in evidence on Figure \ref{fig:bentheimer300cuts} (right) by plotting the percentage of void cells over a perpendicular axis which illustrates the existence of completely blocked area in the sample.
+The complexity of this sample is also put in evidence on Figure \ref{fig:bentheimer300cuts} (right) by plotting the percentage of void cells over a perpendicular axis which illustrates the existence of completely blocked areas in the sample.
 Flows among such media are driven by the pore-scale geometry and their description using simple macroscopic laws constitute an active research topic nowadays.\\
-As an illustration, \citet{Dentz2017} demonstrated, in their work, how the macroscopic advection-diffusion transport law
+As an illustration, \citet{Dentz2017} demonstrated in their work, how the macroscopic advection-diffusion transport law
 \begin{equation}
 	\pdv{\bar{c}(x,t)}{t}+U\pdv{\bar{c}(x,t)}{x}-\mathcal{D}\pdv[2]{\bar{c}(x,t)}{x}=0
 \label{eq:adv_diff}
@@ -20,7 +20,7 @@ failed to describe the diffusion of a macroscale concentration $\bar{c}(x,t)$ fo
 
 
 \section{General numerical approach of the problem}
-In this article as in many other recent works, numerical approaches are adopted in order to bridge the gap between microscopic behavior of the flow and macroscopic diffusion as \citet{Meyer2016}, \citet{Dentz2017} and \citet{Puyguiraud2019}. The similarities in the approach chosen by these works have been regrouped to present the following common methodology.
+In this article as in many other recent works, numerical approaches are adopted in order to bridge the gap between microscopic behavior of the flow and macroscopic diffusion as \citet{Meyer2016}, \citet{Dentz2017} and \citet{Puyguiraud2019}. The similarities in the approach chosen by these works have been combined to present the following common methodology.
 \subsubsection{Sample scanning and physical features}
 First of all, a digital porous domain is obtained either synthetically (\cite{Dentz2017}) or by high resolution tomography of physical sandstone samples (\cite{Meyer2016} and \cite{Puyguiraud2019}).
 Hence, a scalar field  $\rho_d(\textbf{x})$ on a domain, $\Omega_d\ni\textbf{x}$, can be defined as 
@@ -32,11 +32,11 @@ Hence, a scalar field  $\rho_d(\textbf{x})$ on a domain, $\Omega_d\ni\textbf{x}$
 \end{array} 
 \right.
 \]
-In the wide variety of natural porous media, samples are usually differentiated thanks to the following features : the average pore length $L$, the porosity $\phi$ which expresses the ratio between solid and void volume, i.e.
+In the wide variety of natural porous media, samples are usually differentiated through the the following features : the average pore length $L$, the porosity $\phi$ which expresses the ratio between solid and void volume, i.e.
 \[
 \phi = \frac{\int_{\Omega_d}\rho(\textbf{x})d\textbf{x}}{\int_{\Omega_d}d\textbf{x}}
 \] 
-and the tortuosity $\kappa$ which indicates how much paths in the media are twisted by comparing at a time $t>0$, the total length of a path $l(t)$ with a linear travel distance $l_{\hat{\textbf{e}}_i}(t)$ in a arbitrary direction represented by a normal directional vector $\hat{\textbf{e}}_i$, i.e. 
+and the tortuosity $\kappa$ which indicates how much paths in the medium are twisted by comparing at a time $t>0$, the total length of a path $l(t)$ with a linear travel distance $l_{\hat{\textbf{e}}_i}(t)$ in a arbitrary direction represented by a normal directional vector $\hat{\textbf{e}}_i$, i.e. 
 \[
 \kappa = \frac{l(t)}{l_{\hat{\textbf{e}}_i}(t)}.
 \] 
@@ -69,11 +69,12 @@ One often refers to the velocity $U$ with the help of the Péclet number that ex
 \end{equation}
 with $D_m$ the molecular diffusion coefficient. 
 In this work, the Péclet number will be mostly used to express the value of the molecular diffusion coefficient $D_m$ since $U$ and $L$ are kept constant in the simulations.
-Characteristic times can be defined as the macroscopic advection time $\tau_a=U/L$ (often used as reference time $T\equiv\tau_a$) and the microscopic diffusive time $\tau_D=L_0^2/D$.These quantities are then used in the definition of the dimensionless variables
+Characteristic times can be defined as the macroscopic advection time $\tau_a=U/L$ (often used as reference time $T\equiv\tau_a$) and the microscopic diffusive time $\tau_D=L_0^2/D$.
+These quantities are then used in the definition of the dimensionless variables
 \begin{equation}
 \bar{x}=x/L,\quad \bar{u}=u/U,\quad \bar{t}=t/T,\quad \bar{D}_m=1/\Pe.
 \end{equation}
-The numerical solution of (\ref{eq:stokes}) allows then to obtain a approximated map of the Eulerian velocity field $\textbf{u}$ in the digital porous domain which enables to define the tortuosity of the studied domain as
+The numerical solution of (\ref{eq:stokes}) allows then to obtain a approximated map of the Eulerian velocity field $\textbf{u}$ in the digital porous domain, which enables to define the tortuosity of the studied domain as
 \begin{equation}\label{eq:tortuosity}
 \kappa=\frac{\int_0^t|\textbf{u}_e(t)|dt}{\int_0^t \textbf{u}_e(t)\cdot\hat{\textbf{x}}_idt}.
 \end{equation}
@@ -101,11 +102,11 @@ where $p(a|b)$ stands for the probability of $a$ if $b$ happened.
 Most stochastic processes are called separable, i.e., the probability (\ref{eq:cond_prob}) defines entirely the evolution of $\textbf{X}(t)$.
 
 \subsubsection{Markov processes}
-One of the most used stochastic processes in physics are separable and a have conditional probability \eqref{eq:cond_prob} that depends only on the current state $(\textbf{x},t):=(\textbf{y}_{N_y},\tau_{N_y})$ and not on the previously visited ones, i.e. 
+Markov processes are separable stochastic processes, widely used in physics, with conditional probability \eqref{eq:cond_prob} that depends only on the current state $(\textbf{x},t):=(\textbf{y}_{N_y},\tau_{N_y})$ and not on the previously visited ones, i.e. 
 \[
 p(\{\textbf{x}_i,t_i\}_{i=1}^{N_x}|\{\textbf{y}_j,\tau_j\}_{j=1}^{N_y})=p(\{\textbf{x}_i,t_i\}_{i=1}^N|\textbf{y}_{N_y},\tau_{N_y}).
 \]
-A system modeled by these so-called Markov processes can be seen as if the previous visited states are not kept in memory which is a reasonable statement for numerous physical systems, e.g., as in flowing particles or molecular dynamics.
+A system modeled by these so-called Markov processes can be seen as if the previous visited states are not kept in memory, which is a reasonable statement for numerous physical systems, e.g., as in flowing particles or molecular dynamics.
 \subsubsection{Stochastic differential equations and probability distribution functions}
 The evolution of a time dependent, one dimensional, random variable $X(t)$ that follows a Markov process can be expressed as a general stochastic differential equation (SDE) of the form
 \begin{equation}
@@ -118,7 +119,7 @@ On the right hand side, $a(x,t)$ and $b(x,t)$ are drift and diffusion functions,
 p(\xi(t)=x)=\frac{1}{\sqrt{2\pi}\sigma}\exp(-\frac{(x-\mu)^2}{2\sigma^2})
 \]
 with mean $\mu=0$ and variance $\sigma^2=1$.\footnote{In this work, the symbol $\mu$ and $\sigma^2$ will always refer to the mean and variance, respectively, while the standard deviation will refer to the quantity $\sigma$}\\
-The simplest case of Markov process is the pure random walk (RW)
+The simplest case of a Markov process is the pure random walk (RW)
 \begin{equation}\label{eq:RW}
 	dx = dW
 \end{equation}
@@ -127,20 +128,20 @@ If we add a drift $\nu=\mathrm{const}$ to (\ref{eq:RW}), we obtain the Wiener pr
 \begin{equation}\label{eq:wiener}
 dx = \nu dt + dW
 \end{equation}
-that can be seen as an oriented random walk where $\nu$ set the direction and the shifting speed of the average.\\
+that can be seen as an oriented random walk where $\nu$ sets the direction and the shifting speed of the average.\\
 The use of an $x$ dependent drift leads to a commonly used Markov process, the Ornstein-Uhlenbeck (OU) process (\citet[Sec. 3.8.4]{Gardiner1996})
 \begin{equation}
-dx = -kxdt + \sqrt{D}dW.
+dx = -kxdt + \sqrt{D}dW,
 \label{eq:OU}
 \end{equation}
 which can be identified as a Langevin equation (\ref{eq:langevin}) with $a(x,t)=a(x)=kx$, $b(x,t)=\sqrt{D}=\mathrm{const}$. 
-One can prospect that the sign of $k$ can change drastically the behavior of $X(t)$ between converging into a pure random walk ($k>0$) or diverging ($k<0$).\\
+One can prospect that the sign of $k$ can change the behavior of $X(t)$ drastically from a convergence into a pure random walk ($k>0$) to divergence ($k<0$).\\
 With the help of Ito's formula (see \citet[Sec. 4.3.4]{Gardiner1996}), one can obtain the differential equation that governs the evolution of the probability density function (PDF) $p(x,t)$ for any process of the form (\ref{eq:langevin}),
 \begin{equation}
 \partial_t p(x,t) = \partial_x[a(x,t)p(x,t)] + \frac{1}{2}\partial^2_x [b(x,t)p(x,t)]
 \label{eq:fokkerplanck} 
 \end{equation}
-called the Fokker-Planck equation. Equation (\ref{eq:fokkerplanck}) can be analytically solved for each processes seen before, hence leading to analytical equation for the mean and the variance of the random variable. 
+called the Fokker-Planck equation. Equation (\ref{eq:fokkerplanck}) can be analytically solved for each processes seen before, hence leading to analytical expressions for the mean and the variance of the random variable. 
 In case of an OU process (\ref{eq:OU}), an explicit calculation (\cite[Sec. 3.8.4]{Gardiner1996}) leads to
 \[
 \langle X(t)\rangle=x_0 \exp(-kt) \quad\textrm{and}\quad \langle[X(t)-\langle X(t)\rangle]^2\rangle=\frac{D}{2k}[1-\exp(-2kt)]
@@ -159,7 +160,9 @@ Thus, one of the major goals of actual research in porous media can be resumed a
 
 \section{Estimation of PDF by sampling in particle trajectory}
 In the case of flowing particles, modeling the velocity of a particle $i$ as a Markovian variable $\textbf{U}_i$ and knowing a state $(\textbf{x}_0,\textbf{u}_0,t_0)$ would entirely define its position time serie 
-\[\textbf{X}_i(t)=\int_{t_0}^{t}\textbf{U}_i(t')dt'\]
+\[
+\textbf{X}_i(t)=\int_{t_0}^{t}\textbf{U}_i(t')dt',
+\]
 which is an equivalent expression of (\ref{eq:traject}).
 Hence, one needs to estimate Lagrangian velocity PDF $p(\textbf{u},t)$ from empirical data to set the process parameters, e.g., $D$ and $k$ of \eqref{eq:OU}. 
 \\The PDF of a random variable $Q(t)$ can be exactly defined by sampling over an infinitely large amount of $N_p$ particle
@@ -169,7 +172,7 @@ p(Q(t)=q)\equiv p(q,t)=\lim\limits_{N_p\rightarrow\infty}p_{N_p}(q,t) \quad\text
 In this relation, the approximated PDF $p_{N_p}(q,t)$ can now be obtained easily thanks to the DNS time series $\{q(\textbf{a}_i,t)\}_{i=1}^{N_p}$ mesured from the $N_p$ particles and differentiated here by their respective initial position $\{\textbf{a}_i\}_{i=1}^{N_p}$.\\
 
 However, in order to provide an accurate estimation of $p(q,t)$ with a finite number of particles, the DNS data 
-must be sampled during a sufficiently long simulation time $T_{sim}$ and for a sufficient number of particle. 
+must be sampled during a sufficiently long simulation time $T_{sim}$ and for a sufficient number of particles. 
 Mathematically, these sufficiency conditions are formally expressed as ergodicity conditions on the particle time series, i.e.,
 \begin{equation}
 \begin{array}{c}
@@ -187,7 +190,7 @@ More practically, ergodicity condition with a finite number of particle can stil
 Alternatively, it can be verified by testing that the approximated distribution does not change when increasing the size of the serie.\\
 Thus, ergodicity is the most important condition to respect in order to estimate accurately PDF with DNS data. 
 The Markov model parameters can then be set in order to fit the DNS data PDF with random variables PDF under ergodic condition.\\
-Thus, the procedure, described above, forms the basis of the studied papers in the following short literature review.
+Thus, the procedure described above forms the basis of the studied papers in the following short literature review.
 \section{Literature review of recent results}
 \subsubsection{Puyguiraud et al. 2019}
 In their latest work, \citet{Puyguiraud2019} presented an analysis of Lagrangian pore-scale velocity series in a three-dimensional sample of a Berea sandstone, well known for retaining oil and natural gas.
@@ -196,7 +199,7 @@ With the help of the \textsc{SIMPLE} algorithm of \textsc{OpenFoam} and a mesh o
 \begin{equation}\label{eq:nonslip_sideBC}
 \textbf{u}_e(\textbf{x})=0 \quad\forall \textbf{x}\in \{\textbf{y}\in\Omega_d|y_2,y_3\notin]0,L_0[\}.
 \end{equation}
-resulting in a mean flow velocity, $U=8.05\cdot 10^{-4}$m/s.\\
+resulting in a mean flow velocity $U=8.05\cdot 10^{-4}$m/s.\\
 Then, \citeauthor{Puyguiraud2019} investigated the evolution of $N_p=10^6$ particles injected as a uniform $\rho_u$ or flux-weighted $\rho_{fw}$ distribution on an initial particle domain $\Omega_0$, i.e.,
 \begin{equation}\label{eq:unif_distr}
 \rho_u(\textbf{a})=\frac{\mathcal{I}(\textbf{a}\in\Omega_0)}{\int_{\Omega_0} d\textbf{a}}
@@ -206,7 +209,7 @@ and
 \rho_{fw}(\textbf{a})=\frac{\norm{\textbf{u}(\textbf{a})}_2\mathcal{I}(\textbf{a}\in\Omega_0)}{\int_{\Omega_0} \norm{\textbf{u}(\textbf{a})}_2 d\textbf{a}}
 \end{equation}
 respectively, where $\mathcal{I}(a)=1$ if $a$ is true and $0$ otherwise and $\textbf{u}$ the Lagrangian velocity. 
-The trajectories equation (\ref{eq:traject}) has been solved for each particles using a quadratic interpolation of the face velocities and the particles that reached the outlet plane with a speed $u_{L_0}\equiv\norm{\textbf{u}[(L_0,x_2,x_3)^T]}$ were reinjected randomly among the set of position on the inlet plane
+The trajectories equation (\ref{eq:traject}) has been solved for each particle using a quadratic interpolation of the face velocities and the particles that reached the outlet plane with a speed $u_{L_0}\equiv\norm{\textbf{u}[(L_0,x_2,x_3)^T]}$ were reinjected randomly among the set of position on the inlet plane
 \[
 \Omega_{in}=\{\textbf{x}\in\Omega_d|\,x_1=0,\,\norm{\textbf{u}(\textbf{x})}_2\in[u_{L_0}\pm\Delta u]\}\quad\rm{with}\quad \Delta u=u_{L_0}/200.
 \]
@@ -225,7 +228,7 @@ T_{nm}=\frac{1}{N_p}\sum_{i=1}^{N_p}\frac{1}{N_S}\sum_{k=0}^{N_S}\mathcal{I}[u_n
 \]
 where $u_i(s_n)\equiv u(\textbf{a}_i,s_n)$ and $\{\Delta u_l\}_{l=1}^{N_u}$ represent a division of the velocity range in $N_u$ bins s.t. $\min[u(\textbf{a},s)]=u_0$ and $\max[u(\textbf{a},s)]=u_{0}+\sum_{l=1}^{N_u}\Delta u_l$.\\
 The empirical transition probability matrix $T_{nm}$ showed notable variations for $\Delta s\in[\frac{1}{150}L,\frac{8}{3}L]$ as displayed on \citet[Fig. 7]{Puyguiraud2019}. 
-This has been interpreted as a consequence of the non exponential character of the Lagrangian velocity correlation function for distances smaller than a pore length $L$ which motivated \citeauthor{Puyguiraud2019} to set the equidistant sampling rate at $\Delta s = 8L/3$.\\
+This has been interpreted as a consequence of the non exponential character of the Lagrangian velocity correlation function for distances smaller than a pore length $L$, which motivated \citeauthor{Puyguiraud2019} to set the equidistant sampling rate at $\Delta s = 8L/3$.\\
 The dynamic of the s-Lagrangian velocity PDF resulting from $10^8$ empirical Markov processes reproduced accurately the evolution of the same PDF for $10^7$ particles tracked along $3.8L_0$, i.e $3.8L_0/\kappa U\approx 10^{-1}T$, initialized with a flux weighted distribution.\\
 Thereafter, they relaxed their fully empirical Markov model by using a Bernoulli process with transition probability
 \begin{equation}\label{eq:bernoulli}
@@ -269,11 +272,11 @@ As said in the beginning of this introduction, \citeauthor{Dentz2017} demonstrat
 \end{equation}
 As evaluation criterion, they defined the breakthrough curves
 \begin{equation}
-f(x,t)=1-\frac{\int_0^L\int_0^L\,c|_{x_1=x}\textbf{u}_e|_{x_1=x}\cdot \hat{\textbf{e}}_1 dx_2\,dx_3}{\int_0^L\int_0^L\,\textbf{u}_e|_{x_1=x}\cdot \hat{\textbf{e}}_1dx_2\,dx_3}.
+f(x,t)=1-\frac{\int_0^L\int_0^L\,c|_{x_1=x}\textbf{u}_e|_{x_1=x}\cdot \hat{\textbf{e}}_1 dx_2\,dx_3}{\int_0^L\int_0^L\,\textbf{u}_e|_{x_1=x}\cdot \hat{\textbf{e}}_1dx_2\,dx_3},
 \label{eq:DentzBTC}
 \end{equation}
 which expresses the particle-free fraction of the outlet plane when $x=L$.\\
-They showed that the macroscopic model \eqref{eq:adv_diff} was not able capture the tailing behavior of the pore-scale description either at intermediate or long time ($t/T\approx 10^0$ and $\approx 10^2$, respectively).\\
+They showed that the macroscopic model \eqref{eq:adv_diff} was not able to capture the tailing behavior of the pore-scale description either at intermediate or long time ($t/T\approx 10^0$ and $\approx 10^2$, respectively).\\
 Thereafter, \citeauthor{Dentz2017} provided a physical model of the Eulerian velocity magnitude PDF $p_e(u_e\equiv\norm{\textbf{u}_e(\textbf{x})}_2)$  obtained from the DNS data. 
 They modeled the PDF as a sum of pore contributions, assumed as local parabolic Poiseuille flows 
 \begin{equation}\label{eq:dentz_poiseuille}
@@ -291,7 +294,7 @@ p_e(u)=\frac{\exp[-(u/u_0)^{\alpha/2}]}{u_0\Gamma(1+\alpha/2)}
 with $\alpha\approx2.5$ and $v_0\approx2.1U$ estimated by fitting with the DNS Eulerian velocity PDF.
 \citeauthor{Dentz2017} also estimated the mean pore velocity distribution $p_m(v)$ in a similar way and approximate it with a gamma distribution
 \begin{equation}\label{eq:dentz_pmv}
-p_m(u)=\frac{\beta}{U}\left(\frac{\beta u}{U}\right)^{\alpha/2}\exp\left(-\frac{\beta u}{U}\right) 
+p_m(u)=\frac{\beta}{U}\left(\frac{\beta u}{U}\right)^{\alpha/2}\exp\left(-\frac{\beta u}{U}\right),
 \end{equation}
 where $\beta=(\alpha/2+1)$.\\
 It is worth noting that their model \eqref{eq:dentz_pmv} showed good agreement with empirical data by using a unique parameter. Of course, it would be interesting to see if it can be extrapolated to other porous geometries in order to test truly its efficiency.\\
@@ -299,25 +302,25 @@ After this analytical modeling, \citeauthor{Dentz2017} continued their investiga
 Their first model considered purely advective processes, $\mathrm{Pe}=\infty$, with equidistant space transitions by defining the transition time as $\Delta t_n=l/u(t_n)$ with a transition length around the average pore size ($l\sim L$). 
 They estimated analytically the asymptotic behavior of the breakthrough curve $f(x,t\gg T)\propto t^{-2}$ for the purely advective case by approximating the transition times PDF with a flux weighted Eulerian velocity PDF \eqref{eq:dentz_pev}.\\
 %\[\psi_a(t)=\frac{l}{t^3U}p_e(l/t)\]
-The predicted $t^{-2}$ dependence of the breakthrough curve for purely advective transport has been confirmed by the particle simulation for any Péclet value Pe$\in\{30, 3\times 10^2, 5\times 10^2, 10^3\}$. However this TDRW model did not capture the breakthrough curve tailing at either intermediate nor long time.\\
-In the second model, diffusion has been added by considering the Lagrangian velocity PDF as a flux weighted pore mean velocity PDF \eqref{eq:dentz_pmv}. This hypothesis has been motivated by the fact that particles should experience a pore-scale Poiseuille flow \eqref{eq:dentz_poiseuille} that is smoothed by diffusion.
-The direction of spatial transition has also been randomized to allow upstream transitions with probability 
+The predicted $t^{-2}$ dependence of the breakthrough curve for purely advective transport was confirmed by the particle simulation for any Péclet value Pe$\in\{30, 3\times 10^2, 5\times 10^2, 10^3\}$. However this TDRW model did not capture the breakthrough curve tailing at either intermediate nor long time.\\
+In the second model, they included diffusion by considering the Lagrangian velocity PDF as a flux weighted pore mean velocity PDF \eqref{eq:dentz_pmv}. This hypothesis was motivated by the fact that particles should experience a pore-scale Poiseuille flow \eqref{eq:dentz_poiseuille} that is smoothed by diffusion.
+The direction of spatial transition was also randomized to allow upstream transitions with probability 
 \begin{equation}\label{eq:dentz_wu}
 w_u(u)=\frac{D\tau_v}{l^2}\sim \Pe^{-1}.
 \end{equation}
 where $\tau_v$ is a characteristic diffusion time.\\
-This advective-diffusive TDRW model showed breakthrough curve in good agreement with DNS data for the studied Péclet range up to long time where it failed to capture the tailing behavior. \\
+This advective-diffusive TDRW model showed a breakthrough curve in good agreement with DNS data for the studied Péclet range up to long time where it failed to capture the tailing behavior. \\
 To catch the behavior of the DNS breakthrough curve at long time, \citeauthor{Dentz2017} changed their advective-diffusive TDRW by using an arbitrary small transition length $\Delta s\ll L$. 
-They also replaced the pore-scale features used in the previously estimated PDF, i.e., the pore-scale velocity $v$ and diffusion coefficient $D$, by macroscopic ones, i.e., the mean Eulerian velocity $U$ and hydrodynamic coefficient $\mathcal{D}$.\\
-Moreover, they modeled the probability for a particle to be trapped in low velocity region with a Poisson distribution. 
-The parameters of the process has been estimated from the DNS breakthrough curve at long time resulting in $\gamma\approx1.25\times 10^{-4}\tau_D$ and $\langle\tau_f\rangle\approx\frac{1}{2}\tau_D$ for the rate and the mean trapping time, respectively.\\
-By combination of the diffusive and the previous macroscopic trapping TDRWs, \citeauthor{Dentz2017} succeeded in reproducing the complete behavior of the DNS breakthrough curve with a stochastic model for $Pe\in\{30, 3\times 10^2, 5\times 10^2, 10^3\}$. This final model contained five main parameters,
+They also replaced the pore-scale features used in the previously estimated PDF, i.e., the pore-scale velocity $v$ and diffusion coefficient $D$, by macroscopic ones, i.e., the mean Eulerian velocity $U$ and the hydrodynamic diffusion coefficient $\mathcal{D}$.\\
+Moreover, they modeled the probability for a particle to be trapped in low velocity regions with a Poisson distribution. 
+The parameters of the process were estimated from the DNS breakthrough curve at long time resulting in $\gamma\approx1.25\times 10^{-4}\tau_D$ and $\langle\tau_f\rangle\approx\frac{1}{2}\tau_D$ for the rate and the mean trapping time, respectively.\\
+By including diffusion in the previous macroscopic trapping TDRWs, \citeauthor{Dentz2017} succeeded in reproducing the complete behavior of the DNS breakthrough curve with a stochastic model for $Pe\in\{30, 3\times 10^2, 5\times 10^2, 10^3\}$. This final model contained five main parameters,
 \[
 u_0=2.1U,\quad\alpha=2.5,\quad l(\mathrm{Pe})=f(\mathrm{Pe})L,\quad\gamma\tau_D=2.5\times 10^{-4}\quad\textrm{and}\quad\langle\tau_f\rangle/\tau_D=0.5,
 \]
-that can be counted as nine if one take into account that the step length $l$ has been slightly varied for each Péclet value ($f(\mathrm{Pe}=[30, 3\times 10^2, 5\times 10^2, 10^3])=[0.7,0.77,0.77,1]$) without detailed explanations.\\
-Like \citeauthor{Puyguiraud2019}, \citeauthor{Dentz2017} focused their work on equidistant sampled Lagrangian velocity magnitude and for a unique porous sample. However, the stochastic models have been tested for different flow features of the dispersion mechanism. 
-One can see the breakthrough curve of \citeauthor{Dentz2017} as a finer tool than the Lagrangian velocity PDF evaluation used in \citeauthor{Puyguiraud2019} since it requires to take account accurately for the particles trapped in slow velocity region.
+that can be counted as nine if one takes into account that the step length $l$ has been slightly varied for each Péclet value ($f(\mathrm{Pe}=[30, 3\times 10^2, 5\times 10^2, 10^3])=[0.7,0.77,0.77,1]$) without detailed explanations.\\
+Like \citeauthor{Puyguiraud2019}, \citeauthor{Dentz2017} focused their work on the equidistant Lagrangian velocity magnitude and for a unique porous sample. However, the stochastic models have been tested for different flow features of the dispersion mechanism. 
+One can see the breakthrough curve of \citeauthor{Dentz2017} as a finer tool than the Lagrangian velocity PDF evaluation used in \citeauthor{Puyguiraud2019} since it requires to accurately take into account the particles trapped in slow velocity regions.
 It would be interesting to measure the breakthrough curve resulting from the OU process of \citet{Puyguiraud2019} for a better comparison  of their results.
 It can be expected that the TDRW would show better performances than the OU process since the former required to set five parameters and the latter only one.
 
@@ -332,7 +335,7 @@ Inversely to \citet{Dentz2017}, molecular diffusion was not included in the DNS 
 p(v)=\frac{1}{\sqrt{2\pi}\sigma}\exp\left[-\frac{(v-\mu)^2}{2\sigma^2}\right](1-\erf\left[-\frac{\alpha(v-\mu)}{\sqrt{2}\sigma}\right])
 \end{equation}
 where $\alpha$ is the skewness parameter and $v=v(t)\equiv\ln[\norm{\textbf{u}(t)}_2/U]$ the log velocity magnitude\footnote{As a convention for this work, the letter $v$ will always refe to the Lagrangian velocity magnitude.}.
-This PDF enabled to build a stochastic description of Lagrangian velocity evolution using a Markov process following a Langevin equation \eqref{eq:langevin} with 
+This PDF enabled to build a stochastic description of the Lagrangian velocity evolution using a Markov process following a Langevin equation \eqref{eq:langevin} with 
 \begin{equation}\label{eq:meyer_model_v}
 b^2(v,t)=d(v)=c\exp[bv] \quad\rm{and}\quad a(v,t)=a(v)=\frac{1}{2}d(v)\ln[p(v)d(v)]
 \end{equation}
@@ -341,10 +344,10 @@ They also provided an analytical model for the directional angle $\theta=\cos^{-
 \[p(|\theta|)=\frac{|\theta|}{\sigma_\theta^2}\exp\left[-\frac{|\theta|}{2\sigma_\theta^2}\right]\]
 where the relation between $\sigma_\theta$ and the tortuosity, i.e. $\kappa=1/\langle cos(|\theta|)\rangle$, was confirmed by the DNS data. This PDF is then linked to an oscillatory stochastic process with the help of a Smirnov transform used in the same way as in \citet{Puyguiraud2019}. \\
 Thanks to this analysis, \citeauthor{Meyer2016} showed that the traveled distance $L_\theta$ with constant $\theta$ sign could be efficiently represented by an exponential PDF for all media considered (c.f. \citet[Fig- 12]{Meyer2016}). They also modeled a second directional angle $\beta$ with an OU process, identified by analyzing the DNS data.
-With the help of the five parameters Markov modeling of velocity magnitude combined with the oscillatory and OU stochastic models for the directional angles, \citet{Meyer2016} were able to generate three-dimensional trajectories that could be confused with DNS ones. \\
+With the help of the five parameters Markov modeling of the velocity magnitude combined with the oscillatory and OU stochastic models for the directional angles, \citet{Meyer2016} were able to generate three-dimensional trajectories that could be confused with DNS ones. \\
 More quantitatively, they tested the performance of their stochastic models by measuring the particle position PDF over time and its variance for $2\times 10^5$ particles in both longitudinal and transversal directions.
 It appeared that the predicted dispersion was more accurate for medium with low tortuosity and high porosity samples. 
-\cite{Meyer2016} explained it by the fact that samples of complex media need to be larger in order to be considered as an REV which would increase drastically the computational cost though.\\
+\cite{Meyer2016} explained it by the fact that samples of complex media need to be larger in order to be considered as an REV which would drastically increase the computational cost though.\\
 
 It can be hard to compare the samples studied by \citeauthor{Meyer2016} with the Berea sandstone of \citet{Dentz2017} and the synthetic samples of \citet{Puyguiraud2019}. 
 The Bentheimer structure of \citet{Meyer2016} is surely the most similar to both media in term of tortuosity with $\kappa_{\rm{Bent}}=1.65$. 
@@ -352,11 +355,11 @@ However, its porosity does not match ($\phi_{\rm{Bent}}=21.1\%$ against $\phi_{\
 In any case, the comparison between various media done by \citet{Meyer2016} tended to show that structures with low porosity and high tortuosity were the most complex to model. 
 It would be interesting to try to extract and test an approximated law that links the model parameters to the geometric features of the medium.\\
 
-In a more general point of view, the three presented papers showed three different manners to test the results obtained from stochastic modeling. 
-Since the Lagrangian velocity PDF rules the displacement of the particles at a microscopic, it seems clear that the model should recover the behavior of this distribution at first.
-Isochronous sampling displayed complex dynamics in both \citet{Meyer2016} and \citet{Puyguiraud2019} works which may indicate that it contains, generally, more information about the structure of the flow than equidistant series.
-In particular, slow velocity particles shall be under estimate by equidistant sampling which can be a problematic bias when trying to model accurately the particle displacement in a physical point of view.\\
-The comparison between particle breakthrough curve done by \citet{Dentz2017} over time is a very good way to obtain condensed results without losing much information. However, it becomes useless as soon as the considered plane is saturated.\\
+In a more general point of view, the three presented papers showed three different ways to test the results obtained from stochastic modeling. 
+Since the Lagrangian velocity PDF rules the displacement of the particles at a microscopic scale, it seems clear that the model should reproduce the behavior of this distribution first.
+Isochronous sampling displayed complex dynamics in both \citet{Meyer2016} and \citet{Puyguiraud2019} works, which may indicate that it contains, generally, more information about the structure of the flow than equidistant series.
+In particular, slow velocity particles may be underestimated by equidistant sampling which can be a problematic bias when trying to model accurately the particle displacement in a physical point of view.\\
+The comparison between particle breakthrough curves done by \citet{Dentz2017} over time is a very good way to obtain condensed results without losing much information. However, it becomes useless as soon as the considered plane is saturated.\\
 The comparison criteria chosen by \citet{Meyer2016} are more exhaustive as it shows time evolution of particle position PDF but may be harder to read.\\
 
 Inspired from the presented papers, this work aims to study the transition between fully advective to advection-diffusion regimes in porous media by analyzing isochronous time series obtained from direct numerical simulations. 

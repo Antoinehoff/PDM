@@ -5,10 +5,11 @@
 \chapter*{Abstract}
 
 This Master thesis in computational science and engineering depicts the issues rising from transport in porous media and study the effect of molecular diffusion in an previously developed Lagrangian numerical model. \\
-In response to a short literature review comparing three recent papers (\citet{Puyguiraud2019}, \citet{Dentz2017}, \citet{Meyer2016}), numerical simulations have been performed on the ETH Zürich EULER clusters in order to reproduce the results of \citet{Meyer2016} at purely advective regime ($\mathrm{Pe}=\infty$).\\
-Then, these results have been extended to advection diffusion regimes ($\mathrm{Pe}<\infty$) where molecular diffusion appeared to significantly reduce the stagnation of the particle at $\Pe<10^4$.
+A short literature review is presented with a comparison between three recent papers (\citet{Puyguiraud2019}, \citet{Dentz2017}, \citet{Meyer2016}).
+Then, numerical simulations have been performed on the ETH Zürich EULER clusters in order to reproduce the results of \citet{Meyer2016} at purely advective regime ($\mathrm{Pe}=\infty$).
+After this validation, these results have been extended to advection diffusion regimes ($\mathrm{Pe}<\infty$) where molecular diffusion appeared to significantly reduce the stagnation of the particle at $\Pe<10^4$.
 An increase in the averaged Lagrangian velocity magnitude has also been observed for $10^2\leq\Pe\leq10^4$ demonstrating that a small amount of molecular diffusion frees particles from the boundary layers, introducing a physical bias in the velocity sampling.
-At smaller Péclet values, the particle velocity histogram tends to converge to the same distribution as in the fully advective regime since a strong molecular diffusion is able to reroute the slow moving particles just as well as the fast ones.\\
-Finally, a promising track for modeling the longitudinal plume dispersion is proposed by adding, in the stochastic model introduced by \citet{Meyer2016} showed, a Péclet dependent probability to effectuate a random diffusive jump. 
-The model performed well at short time range but need surely more development to catch larger time dispersion behavior.
+At smaller Péclet values, the Lagrangian velocity histogram tends to converge to the same distribution as in the fully advective regime since a strong molecular diffusion is able to reroute the slow moving particles just as well as the fast ones.\\
+Finally, a Péclet dependent probability to effectuate a random diffusive jump has been added to the stochastic model of \citet{Meyer2016}.
+This hybrid model performed well at short time range but need surely more development to catch larger time dispersion behavior.
 \end{tabular}
